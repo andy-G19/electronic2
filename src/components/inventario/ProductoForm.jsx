@@ -367,7 +367,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                     value={formData.precioCompra}
                     onChange={handleChange}
                     min="0"
-                    step="0.01"
+                    step="1.0"
                     className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                       errors.precioCompra ? 'border-red-500' : 'border-gray-300'
                     }`}
@@ -388,7 +388,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                     value={formData.precio}
                     onChange={handleChange}
                     min="0"
-                    step="0.01"
+                    step="1.0"
                     className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                       errors.precio ? 'border-red-500' : 'border-gray-300'
                     }`}

@@ -7,16 +7,19 @@ import Inventario from './components/placeholders/Inventario';
 import Reportes from './components/placeholders/Reportes';
 import Usuarios from './components/placeholders/Usuarios';
 import Configuracion from './components/placeholders/Configuracion';
-import { ProductosProvider } from './context/ProductosContext'; // IMPORTAR
+import ECommerceMain from './components/ecommerce/ECommerceMain'; // NUEVO
+import { ProductosProvider } from './context/ProductosContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [activeView, setActiveView] = useState('dashboard');
+  const [showLogin, setShowLogin] = useState(false); // NUEVO
 
   const handleLogin = (userData) => {
     setUser(userData);
     setIsLoggedIn(true);
+    setShowLogin(false);
   };
 
   const handleLogout = () => {
@@ -44,17 +47,26 @@ function App() {
     }
   };
 
+  // NUEVO: Si no está logueado, mostrar E-Commerce
   if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />;
+    return (
+      <ProductosProvider>
+        {showLogin ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <ECommerceMain onLogin={() => setShowLogin(true)} />
+        )}
+      </ProductosProvider>
+    );
   }
 
+  // Si está logueado, mostrar panel de administración
   return (
-    // ENVOLVER TODO CON EL PROVIDER
     <ProductosProvider>
       <MainLayout 
         activeView={activeView} 
         setActiveView={setActiveView}
-        user={user}
+        usuario={user}
         onLogout={handleLogout}
       >
         {renderView()}
