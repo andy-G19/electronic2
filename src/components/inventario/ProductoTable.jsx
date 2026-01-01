@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Eye, Edit, Trash2, ChevronUp, ChevronDown, Package } from 'lucide-react';
 
 function ProductoTable({ productos, onView, onEdit, onDelete }) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -133,13 +133,30 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
           <tbody className="divide-y divide-gray-200">
             {sortedProductos.map((producto) => (
               <tr key={producto.id} className="hover:bg-gray-50 transition-colors">
-
                 <td className="px-6 py-4">
-                  <div>
-                    <p className="font-medium text-gray-900">{producto.nombre}</p>
-                    <p className="text-sm text-gray-500">
-                      {producto.id} • {producto.proveedor}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    {/* Thumbnail de imagen */}
+                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                      {producto.imagen ? (
+                        <img
+                          src={producto.imagen}
+                          alt={producto.nombre}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Package className="w-6 h-6 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Información del producto */}  
+                    <div>
+                      <p className="font-medium text-gray-900">{producto.nombre}</p>
+                      <p className="text-sm text-gray-500">
+                        {producto.id} • {producto.proveedor}
+                      </p>
+                    </div>
                   </div>
                 </td>
 

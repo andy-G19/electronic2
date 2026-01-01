@@ -1,92 +1,20 @@
 import React, { useState } from 'react';
-import { Package, Plus, Download, Upload, Filter } from 'lucide-react';
+import { Package, Plus, Download, Filter } from 'lucide-react';
+import { useProductos } from '../../context/ProductosContext'; // IMPORTAR
 import ProductoTable from './ProductoTable';
 import ProductoForm from './ProductoForm';
 import ProductoFilters from './ProductoFilters';
 import ProductoModal from './ProductoModal';
 
 function InventarioMain() {
-  // Estado para productos
-  const [productos, setProductos] = useState([
-    { 
-      id: 'PROD-001', 
-      nombre: 'Audífonos Bluetooth X1', 
-      categoria: 'Audio',
-      proveedor: 'AliExpress', 
-      stock: 12, 
-      stockMinimo: 5,
-      precioCompra: 25.00,
-      precio: 35.00, 
-      estado: 'En Stock',
-      descripcion: 'Audífonos inalámbricos con cancelación de ruido',
-      imagen: null
-    },
-    { 
-      id: 'PROD-002', 
-      nombre: 'Smartwatch Series 5', 
-      categoria: 'Wearables',
-      proveedor: 'Alibaba', 
-      stock: 3, 
-      stockMinimo: 5,
-      precioCompra: 80.00,
-      precio: 120.00, 
-      estado: 'Stock Bajo',
-      descripcion: 'Smartwatch con monitor de salud',
-      imagen: null
-    },
-    { 
-      id: 'PROD-003', 
-      nombre: 'Teclado Mecánico RGB', 
-      categoria: 'Accesorios',
-      proveedor: 'Local', 
-      stock: 8, 
-      stockMinimo: 3,
-      precioCompra: 45.00,
-      precio: 65.00, 
-      estado: 'En Stock',
-      descripcion: 'Teclado mecánico con iluminación RGB',
-      imagen: null
-    },
-    { 
-      id: 'PROD-004', 
-      nombre: 'Funda Tablet 10"', 
-      categoria: 'Accesorios',
-      proveedor: 'AliExpress', 
-      stock: 0, 
-      stockMinimo: 5,
-      precioCompra: 12.00,
-      precio: 20.00, 
-      estado: 'Agotado',
-      descripcion: 'Funda protectora para tablet de 10 pulgadas',
-      imagen: null
-    },
-    { 
-      id: 'PROD-005', 
-      nombre: 'Mouse Inalámbrico Pro', 
-      categoria: 'Accesorios',
-      proveedor: 'Local', 
-      stock: 15, 
-      stockMinimo: 5,
-      precioCompra: 18.00,
-      precio: 28.00, 
-      estado: 'En Stock',
-      descripcion: 'Mouse ergonómico inalámbrico de alta precisión',
-      imagen: null
-    },
-    { 
-      id: 'PROD-006', 
-      nombre: 'Cargador USB-C 65W', 
-      categoria: 'Accesorios',
-      proveedor: 'AliExpress', 
-      stock: 4, 
-      stockMinimo: 5,
-      precioCompra: 15.00,
-      precio: 25.00, 
-      estado: 'Stock Bajo',
-      descripcion: 'Cargador rápido USB-C de 65W',
-      imagen: null
-    },
-  ]);
+  // USAR EL HOOK DEL CONTEXT
+  const { 
+    productos, 
+    agregarProducto, 
+    actualizarProducto, 
+    eliminarProducto,
+    obtenerEstadisticas 
+  } = useProductos();
 
   // Estados UI
   const [showForm, setShowForm] = useState(false);
@@ -102,39 +30,15 @@ function InventarioMain() {
     estado: ''
   });
 
-  // Generar nuevo ID, genera ID secuenciales 
-  const generateNewId = () => {
-    const lastId = productos.length > 0 
-      ? parseInt(productos[productos.length - 1].id.split('-')[1]) 
-      : 0;
-    return `PROD-${String(lastId + 1).padStart(3, '0')}`;
-  };
-
-  // Calcular estado basado en stock
-  const calcularEstado = (stock, stockMinimo) => {
-    if (stock === 0) return 'Agotado';
-    if (stock < stockMinimo) return 'Stock Bajo';
-    return 'En Stock';
-  };
-
   // Agregar producto
   const handleAddProducto = (newProducto) => {
-    const producto = {
-      ...newProducto,
-      id: generateNewId(),
-      estado: calcularEstado(newProducto.stock, newProducto.stockMinimo)
-    };
-    setProductos([...productos, producto]);
+    agregarProducto(newProducto);
     setShowForm(false);
   };
 
   // Editar producto
   const handleEditProducto = (updatedProducto) => {
-    const updated = {
-      ...updatedProducto,
-      estado: calcularEstado(updatedProducto.stock, updatedProducto.stockMinimo)
-    };
-    setProductos(productos.map(p => p.id === updated.id ? updated : p));
+    actualizarProducto(updatedProducto.id, updatedProducto);
     setEditingProducto(null);
     setShowForm(false);
   };
@@ -142,7 +46,7 @@ function InventarioMain() {
   // Eliminar producto
   const handleDeleteProducto = (id) => {
     if (window.confirm('¿Estás seguro de eliminar este producto?')) {
-      setProductos(productos.filter(p => p.id !== id));
+      eliminarProducto(id);
       setSelectedProducto(null);
     }
   };
@@ -169,13 +73,7 @@ function InventarioMain() {
   const proveedores = [...new Set(productos.map(p => p.proveedor))];
 
   // Estadísticas
-  const stats = {
-    total: productos.length,
-    enStock: productos.filter(p => p.estado === 'En Stock').length,
-    stockBajo: productos.filter(p => p.estado === 'Stock Bajo').length,
-    agotados: productos.filter(p => p.estado === 'Agotado').length,
-    valorTotal: productos.reduce((sum, p) => sum + (p.precio * p.stock), 0)
-  };
+  const stats = obtenerEstadisticas();
 
   // Exportar a CSV
   const handleExportCSV = () => {
@@ -241,7 +139,7 @@ function InventarioMain() {
       </div>
 
       {/* Estadísticas */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-600 mb-1">Total Productos</p>
           <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
@@ -259,8 +157,12 @@ function InventarioMain() {
           <p className="text-2xl font-bold text-red-600">{stats.agotados}</p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <p className="text-sm text-gray-600 mb-1">Con Imagen</p>
+          <p className="text-2xl font-bold text-indigo-600">{stats.conImagen}</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-600 mb-1">Valor Total</p>
-          <p className="text-2xl font-bold text-gray-900">S/ {stats.valorTotal.toFixed(2)}</p>
+          <p className="text-xl font-bold text-gray-900">S/ {stats.valorTotal.toFixed(2)}</p>
         </div>
       </div>
 

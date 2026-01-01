@@ -51,7 +51,15 @@ function ProductoCard({ producto, onSelect }) {
 
       {/* Imagen del producto */}
       <div className="w-full h-32 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg mb-3 flex items-center justify-center">
-        <Package className="w-12 h-12 text-indigo-400" />
+        {producto.imagen ? (
+          <img
+            src={producto.imagen}
+            alt={producto.nombre}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <Package className="w-12 h-12 text-indigo-400" />
+        )}
       </div>
 
       {/* Información */}

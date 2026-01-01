@@ -19,7 +19,7 @@ function ReportesMain() {
       total: 212.40,
       metodoPago: 'efectivo',
       productos: [
-        { nombre: 'Audífonos Bluetooth X1', cantidad: 2, precio: 35.00 },
+        { nombre: 'Audífonos Bluetooth X1', cantidad: 2, precio: 35.00, imagen: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop' },
         { nombre: 'Mouse Inalámbrico Pro', cantidad: 1, precio: 28.00 }
       ]
     },

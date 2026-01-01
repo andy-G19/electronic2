@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, Package} from 'lucide-react';
+import ImageUploader from './ImageUploader';
 
 function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
   const [formData, setFormData] = useState({
@@ -26,7 +27,15 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
     }
   }, [producto]);
 
-  const handleImagenChange = (e) => {
+  const handleImagenChange = (imagenBase64) => {
+    setFormData(prev => ({ ...prev, imagen: imagenBase64 }));
+  };
+
+  const handleImagenRemove = () => {
+    setFormData(prev => ({ ...prev, imagen: null }));
+  };
+
+  /*const handleImagenChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProducto({
@@ -34,7 +43,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
         imagen: file.name // Solo el nombre, el usuario debe copiar la imagen a la carpeta
       });
     }
-  };
+  };*/
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -287,6 +296,18 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
               />
             </div>
           </div>
+
+
+          {/* Sección de Imagen */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900">Imagen del Producto</h4>
+            <ImageUploader
+              imagen={formData.imagen}
+              onImagenChange={handleImagenChange}
+              onImagenRemove={handleImagenRemove}
+            />
+          </div>
+          
 
           {/* Stock */}
           <div className="space-y-4">

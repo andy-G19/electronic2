@@ -1,63 +1,16 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Search, X, Plus, Minus, Trash2, DollarSign, Receipt } from 'lucide-react';
+import { useProductos } from '../../context/ProductosContext';
 import ProductoSelector from './ProductoSelector';
 import CarritoPanel from './CarritoPanel';
 import PagoModal from './PagoModal';
 import TicketModal from './TicketModal';
 
 function POSMain() {
-  // Productos disponibles (en producción vendrían del inventario)
-  const [productos] = useState([
-    { 
-      id: 'PROD-001', 
-      nombre: 'Audífonos Bluetooth X1', 
-      categoria: 'Audio',
-      precio: 35.00, 
-      stock: 12,
-      imagen: null
-    },
-    { 
-      id: 'PROD-002', 
-      nombre: 'Smartwatch Series 5', 
-      categoria: 'Wearables',
-      precio: 120.00, 
-      stock: 3,
-      imagen: null
-    },
-    { 
-      id: 'PROD-003', 
-      nombre: 'Teclado Mecánico RGB', 
-      categoria: 'Accesorios',
-      precio: 65.00, 
-      stock: 8,
-      imagen: null
-    },
-    { 
-      id: 'PROD-004', 
-      nombre: 'Mouse Inalámbrico Pro', 
-      categoria: 'Accesorios',
-      precio: 28.00, 
-      stock: 15,
-      imagen: null
-    },
-    { 
-      id: 'PROD-005', 
-      nombre: 'Cargador USB-C 65W', 
-      categoria: 'Accesorios',
-      precio: 25.00, 
-      stock: 4,
-      imagen: null
-    },
-    { 
-      id: 'PROD-006', 
-      nombre: 'Funda Tablet 10"', 
-      categoria: 'Accesorios',
-      precio: 20.00, 
-      stock: 0,
-      imagen: null
-    },
-  ]);
-
+  // USAR PRODUCTOS DEL CONTEXT
+  const { obtenerProductosDisponibles, actualizarStock } = useProductos();
+  const productos = obtenerProductosDisponibles(); // Solo productos con stock
+  
   // Estado del carrito
   const [carrito, setCarrito] = useState([]);
   const [busqueda, setBusqueda] = useState('');
@@ -152,6 +105,11 @@ function POSMain() {
       total: calcularTotal(),
       ...datosVenta
     };
+
+    // ACTUALIZAR STOCK DE PRODUCTOS VENDIDOS
+    carrito.forEach(item => {
+      actualizarStock(item.id, item.cantidad);
+    });
 
     setVentaCompletada(venta);
     setShowPagoModal(false);

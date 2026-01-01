@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Package, ShoppingCart } from 'lucide-react';
+import { useProductos } from '../../context/ProductosContext'; // IMPORTAR
 import MetricCard from './MetricCard';
 import StockAlert from './StockAlert';
 import InventoryTable from './InventoryTable';
 import GananciasChart from './GananciasChart';
 
 function Dashboard() {
-  const [inventario] = useState([
-    { id: 'PROD-001', nombre: 'Audífonos Bluetooth X1', proveedor: 'AliExpress', stock: 12, precio: 35.00, estado: 'En Stock' },
-    { id: 'PROD-002', nombre: 'Smartwatch Series 5', proveedor: 'Alibaba', stock: 3, precio: 120.00, estado: 'Stock Bajo' },
-    { id: 'PROD-003', nombre: 'Teclado Mecánico RGB', proveedor: 'Local', stock: 8, precio: 65.00, estado: 'En Stock' },
-    { id: 'PROD-004', nombre: 'Funda Tablet 10"', proveedor: 'AliExpress', stock: 0, precio: 20.00, estado: 'Agotado' },
-  ]);
+  // USAR PRODUCTOS DEL CONTEXT
+  const { productos, obtenerEstadisticas } = useProductos();
+  const stats = obtenerEstadisticas();
 
-  const productosStockCritico = inventario.filter(p => p.stock < 5).length;
+  const productosStockCritico = productos.filter(p => p.stock < 5).length;
+
+  // Tomar solo los primeros 4 productos para mostrar en el dashboard
+  const inventarioReciente = productos.slice(0, 4);
 
   const metrics = [
     {
@@ -81,7 +82,7 @@ function Dashboard() {
       )}
 
       {/* Inventario Reciente */}
-      <InventoryTable inventario={inventario} />
+      <InventoryTable inventario={inventarioReciente} />
 
       {/* Resumen de Ganancias */}
       <GananciasChart />

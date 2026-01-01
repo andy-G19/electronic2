@@ -29,9 +29,26 @@ function ProductoModal({ producto, onClose, onEdit, onDelete }) {
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <Package className="w-6 h-6 text-indigo-600" />
-            </div>
+            
+
+            {/* Imagen del producto */}
+              <div className="relative h-64 bg-gray-100 rounded-lg overflow-hidden mb-6">
+                {producto.imagen ? (
+                  <img
+                    src={producto.imagen}
+                    alt={producto.nombre}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <Package className="w-24 h-24 text-gray-400 mb-3" />
+                    <p className="text-sm text-gray-500">Sin imagen disponible</p>
+                  </div>
+                )}
+              </div>
+            
+            
+
             <div>
               <h3 className="text-lg font-semibold text-gray-900">{producto.nombre}</h3>
               <p className="text-sm text-gray-500">{producto.id}</p>

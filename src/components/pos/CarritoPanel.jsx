@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Trash2, CreditCard, Package } from 'lucide-react';
 
 function CarritoPanel({ carrito, onActualizarCantidad, onEliminar, subtotal, igv, total, onProcederPago }) {
   if (carrito.length === 0) {
@@ -81,15 +81,34 @@ function CarritoPanel({ carrito, onActualizarCantidad, onEliminar, subtotal, igv
 function CarritoItem({ item, onActualizarCantidad, onEliminar }) {
   return (
     <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-      {/* Producto info */}
-      <div className="flex justify-between items-start">
-        <div className="flex-1">
-          <h4 className="font-medium text-gray-900 text-sm">{item.nombre}</h4>
-          <p className="text-xs text-gray-500 mt-1">{item.id}</p>
+      {/* Producto info con imagen */}
+      <div className="flex items-start gap-3">
+        {/* Thumbnail de imagen */}
+        <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+          {item.imagen ? (
+            <img
+              src={item.imagen}
+              alt={item.nombre}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Package className="w-8 h-8 text-gray-400" />
+            </div>
+          )}
         </div>
+
+        {/* Información del producto */}
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-gray-900 text-sm truncate">{item.nombre}</h4>
+          <p className="text-xs text-gray-500 mt-1">{item.id}</p>
+          <p className="text-xs text-gray-600 mt-1">S/ {item.precio.toFixed(2)} c/u</p>
+        </div>
+
+        {/* Botón eliminar */}
         <button
           onClick={() => onEliminar(item.id)}
-          className="text-red-600 hover:text-red-700 p-1"
+          className="text-red-600 hover:text-red-700 p-1 flex-shrink-0"
           title="Eliminar"
         >
           <Trash2 className="w-4 h-4" />
@@ -97,11 +116,12 @@ function CarritoItem({ item, onActualizarCantidad, onEliminar }) {
       </div>
 
       {/* Precio y cantidad */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pt-3 border-t border-gray-200">
         <div className="flex items-center gap-2">
           <button
             onClick={() => onActualizarCantidad(item.id, item.cantidad - 1)}
-            className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+            disabled={item.cantidad <= 1}
+            className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Minus className="w-4 h-4" />
           </button>
@@ -120,14 +140,14 @@ function CarritoItem({ item, onActualizarCantidad, onEliminar }) {
           
           <button
             onClick={() => onActualizarCantidad(item.id, item.cantidad + 1)}
-            className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+            disabled={item.cantidad >= item.stock}
+            className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="w-4 h-4" />
           </button>
         </div>
 
         <div className="text-right">
-          <p className="text-xs text-gray-500">S/ {item.precio.toFixed(2)} c/u</p>
           <p className="text-lg font-bold text-indigo-600">
             S/ {(item.precio * item.cantidad).toFixed(2)}
           </p>
@@ -135,8 +155,13 @@ function CarritoItem({ item, onActualizarCantidad, onEliminar }) {
       </div>
 
       {/* Stock disponible */}
-      <div className="text-xs text-gray-500">
-        Disponible: <span className="font-medium">{item.stock} unidades</span>
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-gray-500">
+          Disponible: <span className="font-medium text-gray-700">{item.stock} unidades</span>
+        </span>
+        {item.cantidad >= item.stock && (
+          <span className="text-orange-600 font-medium">Stock máximo</span>
+        )}
       </div>
     </div>
   );
