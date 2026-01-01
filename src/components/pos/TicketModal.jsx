@@ -200,7 +200,7 @@ www.elecsales.com
           </button>
           <button
             onClick={handleImprimir}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors font-semibold"
           >
             <Printer className="w-4 h-4" />
             Imprimir

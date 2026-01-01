@@ -24,7 +24,7 @@ function ProductoFilters({ filters, setFilters, categorias, proveedores }) {
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+            className="text-sm text-sky-400 hover:text-sky-500 flex items-center gap-1"
           >
             <X className="w-4 h-4" />
             Limpiar filtros
@@ -45,7 +45,7 @@ function ProductoFilters({ filters, setFilters, categorias, proveedores }) {
               value={filters.search}
               onChange={(e) => handleChange('search', e.target.value)}
               placeholder="ID o nombre..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
         </div>
@@ -58,7 +58,7 @@ function ProductoFilters({ filters, setFilters, categorias, proveedores }) {
           <select
             value={filters.categoria}
             onChange={(e) => handleChange('categoria', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             <option value="">Todas las categorías</option>
             {categorias.map(cat => (
@@ -75,7 +75,7 @@ function ProductoFilters({ filters, setFilters, categorias, proveedores }) {
           <select
             value={filters.proveedor}
             onChange={(e) => handleChange('proveedor', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             <option value="">Todos los proveedores</option>
             {proveedores.map(prov => (
@@ -92,7 +92,7 @@ function ProductoFilters({ filters, setFilters, categorias, proveedores }) {
           <select
             value={filters.estado}
             onChange={(e) => handleChange('estado', e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             <option value="">Todos los estados</option>
             <option value="En Stock">En Stock</option>

@@ -200,7 +200,7 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
                     </button>
                     <button
                       onClick={() => onEdit(producto)}
-                      className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      className="p-1.5 text-sky-400 hover:bg-sky-50 rounded-lg transition-colors"
                       title="Editar"
                     >
                       <Edit className="w-4 h-4" />

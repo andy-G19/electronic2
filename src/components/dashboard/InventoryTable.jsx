@@ -21,7 +21,7 @@ function InventoryTable({ inventario }) {
     <div className="bg-white rounded-xl shadow-sm border border-gray-200">
       <div className="p-6 border-b border-gray-200 flex justify-between items-center">
         <h3 className="text-lg font-semibold text-gray-900">Inventario Reciente</h3>
-        <button className="text-indigo-600 text-sm font-medium hover:text-indigo-700 transition-colors">
+        <button className="text-sky-400 text-sm font-medium hover:text-sky-500 transition-colors">
           Ver todo
         </button>
       </div>
@@ -89,7 +89,7 @@ function InventoryTable({ inventario }) {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="text-indigo-600 hover:text-indigo-800 font-medium text-sm transition-colors">
+                  <button className="text-sky-400 hover:text-indigo-800 font-medium text-sm transition-colors">
                     •••
                   </button>
                 </td>

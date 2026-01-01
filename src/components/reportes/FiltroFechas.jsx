@@ -12,7 +12,7 @@ function FiltroFechas({ periodo, setPeriodo, fechaInicio, setFechaInicio, fechaF
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center gap-3 mb-4">
-        <Calendar className="w-5 h-5 text-indigo-600" />
+        <Calendar className="w-5 h-5 text-sky-400" />
         <h3 className="font-semibold text-gray-900">Período de Análisis</h3>
       </div>
 
@@ -23,7 +23,7 @@ function FiltroFechas({ periodo, setPeriodo, fechaInicio, setFechaInicio, fechaF
             onClick={() => setPeriodo(p.id)}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               periodo === p.id
-                ? 'bg-indigo-600 text-white shadow-md'
+                ? 'bg-sky-300 text-white shadow-md'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -42,7 +42,7 @@ function FiltroFechas({ periodo, setPeriodo, fechaInicio, setFechaInicio, fechaF
               type="date"
               value={fechaInicio || ''}
               onChange={(e) => setFechaInicio(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
           <div>
@@ -53,7 +53,7 @@ function FiltroFechas({ periodo, setPeriodo, fechaInicio, setFechaInicio, fechaF
               type="date"
               value={fechaFin || ''}
               onChange={(e) => setFechaFin(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
         </div>

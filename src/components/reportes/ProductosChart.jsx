@@ -35,9 +35,9 @@ function ProductosChart({ productos }) {
         {productos.map((producto, index) => {
           const porcentaje = (producto.cantidad / maxCantidad) * 100;
           const colores = [
-            'bg-indigo-500',
+            'bg-sky-500',
             'bg-purple-500',
-            'bg-pink-500',
+            'bg-sky-200',
             'bg-orange-500',
             'bg-blue-500'
           ];

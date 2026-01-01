@@ -15,7 +15,7 @@ function UsuariosTabla({ usuarios, onView, onEdit, onDelete, onToggleEstado }) {
 
   const getRolBadge = (rol) => {
     const styles = {
-      'Administrador': 'bg-purple-100 text-purple-800 border-purple-200',
+      'Administrador': 'bg-sky-100 text-purple-800 border-sky-200',
       'Supervisor': 'bg-blue-100 text-blue-800 border-blue-200',
       'Vendedor': 'bg-green-100 text-green-800 border-green-200',
     };
@@ -77,7 +77,7 @@ function UsuariosTabla({ usuarios, onView, onEdit, onDelete, onToggleEstado }) {
               <tr key={usuario.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center font-bold text-indigo-600">
+                    <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center font-bold text-sky-400">
                       {usuario.nombre.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
@@ -117,7 +117,7 @@ function UsuariosTabla({ usuarios, onView, onEdit, onDelete, onToggleEstado }) {
                     </button>
                     <button
                       onClick={() => onEdit(usuario)}
-                      className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      className="p-1.5 text-sky-400 hover:bg-sky-50 rounded-lg transition-colors"
                       title="Editar"
                     >
                       <Edit className="w-4 h-4" />

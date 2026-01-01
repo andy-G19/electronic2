@@ -73,7 +73,7 @@ function ProductoModal({ producto, onClose, onEdit, onDelete }) {
             <div className="flex gap-2">
               <button
                 onClick={onEdit}
-                className="flex items-center gap-2 px-4 py-2 text-indigo-600 border border-indigo-300 rounded-lg hover:bg-indigo-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sky-400 border border-sky-200 rounded-lg hover:bg-sky-50 transition-colors"
               >
                 <Edit className="w-4 h-4" />
                 Editar
@@ -159,7 +159,7 @@ function ProductoModal({ producto, onClose, onEdit, onDelete }) {
               </div>
               <div className="bg-white border border-gray-200 rounded-lg p-4">
                 <p className="text-sm text-gray-600 mb-1">Precio Venta</p>
-                <p className="text-2xl font-bold text-indigo-600">S/ {producto.precio.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-sky-400">S/ {producto.precio.toFixed(2)}</p>
               </div>
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <p className="text-sm text-green-700 mb-1">Margen</p>

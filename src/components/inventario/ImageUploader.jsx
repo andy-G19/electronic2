@@ -69,7 +69,7 @@ function ImageUploader({ imagen, onImagenChange, onImagenRemove }) {
       {loading && (
         <div className="flex items-center justify-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
           <div className="text-center">
-            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+            <div className="w-12 h-12 border-4 border-sky-300 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
             <p className="text-sm text-gray-600">Procesando imagen...</p>
           </div>
         </div>
@@ -93,7 +93,7 @@ function ImageUploader({ imagen, onImagenChange, onImagenRemove }) {
             </button>
             <label
               htmlFor="file-upload-replace"
-              className="opacity-0 group-hover:opacity-100 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all cursor-pointer flex items-center gap-2"
+              className="opacity-0 group-hover:opacity-100 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-all cursor-pointer flex items-center gap-2"
             >
               <Upload className="w-4 h-4" />
               Cambiar
@@ -115,7 +115,7 @@ function ImageUploader({ imagen, onImagenChange, onImagenRemove }) {
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
             dragActive 
-              ? 'border-indigo-500 bg-indigo-50' 
+              ? 'border-indigo-500 bg-sky-50' 
               : 'border-gray-300 hover:border-gray-400'
           }`}
         >
@@ -135,7 +135,7 @@ function ImageUploader({ imagen, onImagenChange, onImagenRemove }) {
           />
           <label
             htmlFor="file-upload-new"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 cursor-pointer transition-colors"
           >
             <Upload className="w-4 h-4" />
             Seleccionar Imagen

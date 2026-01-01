@@ -223,7 +223,7 @@ function ReportesMain() {
         </div>
         <button
           onClick={handleExportarReporte}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
         >
           <Download className="w-4 h-4" />
           Exportar Reporte
@@ -244,8 +244,8 @@ function ReportesMain() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-sky-100 rounded-lg flex items-center justify-center">
+              <DollarSign className="w-6 h-6 text-sky-400" />
             </div>
             <TrendingUp className="w-5 h-5 text-green-600" />
           </div>
@@ -265,8 +265,8 @@ function ReportesMain() {
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-sky-100 rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-6 h-6 text-sky-400" />
             </div>
           </div>
           <p className="text-sm text-gray-600 mb-1">Ticket Promedio</p>

@@ -126,8 +126,8 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <Package className="w-5 h-5 text-indigo-600" />
+            <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
+              <Package className="w-5 h-5 text-sky-400" />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
@@ -160,7 +160,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                 name="nombre"
                 value={formData.nombre}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                   errors.nombre ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Ej: Audífonos Bluetooth X1"
@@ -181,7 +181,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                       name="categoria"
                       value={formData.categoria}
                       onChange={handleChange}
-                      className={`flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                      className={`flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                         errors.categoria ? 'border-red-500' : 'border-gray-300'
                       }`}
                     >
@@ -204,13 +204,13 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                       type="text"
                       value={newCategoria}
                       onChange={(e) => setNewCategoria(e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
                       placeholder="Nueva categoría"
                     />
                     <button
                       type="button"
                       onClick={handleAddCategoria}
-                      className="px-3 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                      className="px-3 py-2 text-sm bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
                     >
                       Agregar
                     </button>
@@ -236,7 +236,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                       name="proveedor"
                       value={formData.proveedor}
                       onChange={handleChange}
-                      className={`flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                      className={`flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                         errors.proveedor ? 'border-red-500' : 'border-gray-300'
                       }`}
                     >
@@ -259,13 +259,13 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                       type="text"
                       value={newProveedor}
                       onChange={(e) => setNewProveedor(e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
                       placeholder="Nuevo proveedor"
                     />
                     <button
                       type="button"
                       onClick={handleAddProveedor}
-                      className="px-3 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                      className="px-3 py-2 text-sm bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
                     >
                       Agregar
                     </button>
@@ -291,7 +291,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                 value={formData.descripcion}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
                 placeholder="Descripción del producto..."
               />
             </div>
@@ -324,7 +324,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                   value={formData.stock}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                     errors.stock ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -341,7 +341,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                   value={formData.stockMinimo}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                     errors.stockMinimo ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -368,7 +368,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                     onChange={handleChange}
                     min="0"
                     step="1.0"
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                       errors.precioCompra ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -389,7 +389,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
                     onChange={handleChange}
                     min="0"
                     step="1.0"
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                       errors.precio ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -418,7 +418,7 @@ function ProductoForm({ producto, onSave, onClose, categorias, proveedores }) {
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors flex items-center justify-center gap-2"
             >
               <Save className="w-4 h-4" />
               {producto ? 'Guardar Cambios' : 'Crear Producto'}

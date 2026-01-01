@@ -55,7 +55,7 @@ function ConfiguracionMain() {
         </div>
         <button
           onClick={handleGuardar}
-          className="flex items-center gap-2 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-6 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
         >
           {guardado ? (
             <>
@@ -81,7 +81,7 @@ function ConfiguracionMain() {
       {/* Información de la Empresa */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-6">
-          <Building className="w-5 h-5 text-indigo-600" />
+          <Building className="w-5 h-5 text-sky-400" />
           Información de la Empresa
         </h3>
 
@@ -94,7 +94,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.nombreEmpresa}
               onChange={(e) => handleChange('nombreEmpresa', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -106,7 +106,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.ruc}
               onChange={(e) => handleChange('ruc', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -118,7 +118,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.direccion}
               onChange={(e) => handleChange('direccion', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -130,7 +130,7 @@ function ConfiguracionMain() {
               type="tel"
               value={config.telefono}
               onChange={(e) => handleChange('telefono', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -142,7 +142,7 @@ function ConfiguracionMain() {
               type="email"
               value={config.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -154,7 +154,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.web}
               onChange={(e) => handleChange('web', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
         </div>
@@ -176,7 +176,7 @@ function ConfiguracionMain() {
               type="number"
               value={config.igv}
               onChange={(e) => handleChange('igv', parseFloat(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
               min="0"
               max="100"
               step="0.1"
@@ -190,7 +190,7 @@ function ConfiguracionMain() {
             <select
               value={config.moneda}
               onChange={(e) => handleChange('moneda', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             >
               <option value="PEN">Soles Peruanos (PEN)</option>
               <option value="USD">Dólares (USD)</option>
@@ -206,7 +206,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.simboloMoneda}
               onChange={(e) => handleChange('simboloMoneda', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
         </div>
@@ -228,7 +228,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.nombreSistema}
               onChange={(e) => handleChange('nombreSistema', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
@@ -240,7 +240,7 @@ function ConfiguracionMain() {
               type="text"
               value={config.version}
               onChange={(e) => handleChange('version', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
               disabled
             />
           </div>
@@ -253,7 +253,7 @@ function ConfiguracionMain() {
               type="number"
               value={config.stockMinimoPorDefecto}
               onChange={(e) => handleChange('stockMinimoPorDefecto', parseInt(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
               min="0"
             />
           </div>
@@ -275,7 +275,7 @@ function ConfiguracionMain() {
             <select
               value={config.impresora}
               onChange={(e) => handleChange('impresora', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             >
               <option value="Térmica 80mm">Térmica 80mm</option>
               <option value="Térmica 58mm">Térmica 58mm</option>
@@ -290,7 +290,7 @@ function ConfiguracionMain() {
             <select
               value={config.tamañoTicket}
               onChange={(e) => handleChange('tamañoTicket', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             >
               <option value="80mm">80mm</option>
               <option value="58mm">58mm</option>
@@ -304,7 +304,7 @@ function ConfiguracionMain() {
                 type="checkbox"
                 checked={config.mostrarLogo}
                 onChange={(e) => handleChange('mostrarLogo', e.target.checked)}
-                className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="w-5 h-5 text-sky-400 border-gray-300 rounded focus:ring-sky-300"
               />
               <span className="text-sm font-medium text-gray-700">
                 Mostrar logo en tickets
@@ -317,7 +317,7 @@ function ConfiguracionMain() {
       {/* Backup y Seguridad */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-6">
-          <Database className="w-5 h-5 text-purple-600" />
+          <Database className="w-5 h-5 text-sky-400" />
           Backup y Seguridad
         </h3>
 
@@ -328,7 +328,7 @@ function ConfiguracionMain() {
                 type="checkbox"
                 checked={config.backupAutomatico}
                 onChange={(e) => handleChange('backupAutomatico', e.target.checked)}
-                className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="w-5 h-5 text-sky-400 border-gray-300 rounded focus:ring-sky-300"
               />
               <span className="text-sm font-medium text-gray-700">
                 Activar backup automático
@@ -343,7 +343,7 @@ function ConfiguracionMain() {
                 <select
                   value={config.frecuenciaBackup}
                   onChange={(e) => handleChange('frecuenciaBackup', e.target.value)}
-                  className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
                 >
                   <option value="diario">Diario</option>
                   <option value="semanal">Semanal</option>
@@ -354,7 +354,7 @@ function ConfiguracionMain() {
           </div>
 
           <div className="pt-4 border-t border-gray-200">
-            <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+            <button className="px-6 py-2 bg-sky-300 text-white rounded-lg hover:bg-purple-700 transition-colors">
               Crear Backup Ahora
             </button>
           </div>

@@ -15,7 +15,7 @@ function UsuarioModal({ usuario, onClose, onEdit, onDelete, onToggleEstado }) {
   const getRolColor = (rol) => {
     switch (rol) {
       case 'Administrador':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
+        return 'bg-sky-100 text-purple-800 border-sky-200';
       case 'Supervisor':
         return 'bg-blue-100 text-blue-800 border-blue-200';
       default:
@@ -40,7 +40,7 @@ function UsuarioModal({ usuario, onClose, onEdit, onDelete, onToggleEstado }) {
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center font-bold text-indigo-600 text-lg">
+            <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center font-bold text-sky-400 text-lg">
               {usuario.nombre.split(' ').map(n => n[0]).join('')}
             </div>
             <div>
@@ -76,7 +76,7 @@ function UsuarioModal({ usuario, onClose, onEdit, onDelete, onToggleEstado }) {
             <div className="flex gap-2">
               <button
                 onClick={onEdit}
-                className="flex items-center gap-2 px-4 py-2 text-indigo-600 border border-indigo-300 rounded-lg hover:bg-indigo-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sky-400 border border-sky-200 rounded-lg hover:bg-sky-50 transition-colors"
               >
                 <Edit className="w-4 h-4" />
                 Editar
@@ -110,8 +110,8 @@ function UsuarioModal({ usuario, onClose, onEdit, onDelete, onToggleEstado }) {
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-indigo-600" />
+                <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-sky-400" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Email</p>
@@ -147,8 +147,8 @@ function UsuarioModal({ usuario, onClose, onEdit, onDelete, onToggleEstado }) {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-sky-400" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Último Acceso</p>

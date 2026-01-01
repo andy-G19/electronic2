@@ -24,8 +24,8 @@ function Dashboard() {
       change: '+12%',
       changeType: 'positive',
       icon: ShoppingCart,
-      iconBg: 'bg-indigo-100',
-      iconColor: 'text-indigo-600'
+      iconBg: 'bg-sky-100',
+      iconColor: 'text-sky-400'
     },
     {
       title: 'Ganancia Neta',
@@ -62,7 +62,7 @@ function Dashboard() {
             <Package className="w-4 h-4" />
             <span className="hidden sm:inline">Nuevo Producto</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors">
             <ShoppingCart className="w-4 h-4" />
             <span className="hidden sm:inline">Nueva Venta (POS)</span>
           </button>

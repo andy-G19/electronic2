@@ -26,7 +26,7 @@ function GananciasChart({ ventas }) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-900 mb-2">{payload[0].payload.nombre}</p>
-          <p className="text-sm text-indigo-600">
+          <p className="text-sm text-sky-400">
             Total: <span className="font-bold">S/ {payload[0].value.toFixed(2)}</span>
           </p>
           <p className="text-sm text-green-600">

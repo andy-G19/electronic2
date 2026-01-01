@@ -10,7 +10,7 @@ function Header({ sidebarOpen, setSidebarOpen, usuario, onLogout }) {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="rounded-lg transition-transform duration-300 shadow-md hover:scale-110 hover:bg-gray-200 focus:outline-none"
           >
-            {sidebarOpen ? <X className={`w-6 h-6 text-indigo-600 transform transition-transform duration-300 ${sidebarOpen ? 'rotate-0' : 'rotate-90'}`} /> : <Menu className="w-6 h-6 text-indigo-600" />}
+            {sidebarOpen ? <X className={`w-6 h-6 text-sky-400 transform transition-transform duration-300 ${sidebarOpen ? 'rotate-0' : 'rotate-90'}`} /> : <Menu className="w-6 h-6 text-sky-400" />}
           </button>
           
           
@@ -19,7 +19,7 @@ function Header({ sidebarOpen, setSidebarOpen, usuario, onLogout }) {
             <input
               type="text"
               placeholder="Buscar productos, tickets o clientes..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent"
             />
           </div>
         </div>

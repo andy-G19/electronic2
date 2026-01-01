@@ -130,7 +130,7 @@ function InventarioMain() {
               setEditingProducto(null);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Nuevo Producto</span>
@@ -158,7 +158,7 @@ function InventarioMain() {
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-600 mb-1">Con Imagen</p>
-          <p className="text-2xl font-bold text-indigo-600">{stats.conImagen}</p>
+          <p className="text-2xl font-bold text-sky-400">{stats.conImagen}</p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-600 mb-1">Valor Total</p>

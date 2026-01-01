@@ -40,7 +40,7 @@ function ProductoCard({ producto, onSelect }) {
   return (
     <button
       onClick={() => onSelect(producto)}
-      className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-indigo-300 transition-all text-left group relative"
+      className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-sky-200 transition-all text-left group relative"
     >
       {/* Badge de Stock */}
       {stockBajo && (
@@ -64,14 +64,14 @@ function ProductoCard({ producto, onSelect }) {
 
       {/* Información */}
       <div className="space-y-2">
-        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-indigo-600 transition-colors">
+        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-sky-400 transition-colors">
           {producto.nombre}
         </h3>
         
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-gray-500">{producto.id}</p>
-            <p className="text-lg font-bold text-indigo-600">S/ {producto.precio.toFixed(2)}</p>
+            <p className="text-lg font-bold text-sky-400">S/ {producto.precio.toFixed(2)}</p>
           </div>
           <div className="text-right">
             <p className="text-xs text-gray-500">Stock</p>
@@ -87,7 +87,7 @@ function ProductoCard({ producto, onSelect }) {
 
         {/* Botón de agregar */}
         <div className="pt-2 border-t border-gray-200">
-          <div className="flex items-center justify-center gap-2 text-indigo-600 font-medium text-sm group-hover:text-indigo-700">
+          <div className="flex items-center justify-center gap-2 text-sky-400 font-medium text-sm group-hover:text-sky-500">
             <Plus className="w-4 h-4" />
             <span>Agregar al carrito</span>
           </div>

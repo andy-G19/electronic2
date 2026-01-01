@@ -2,6 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   PALETA DE COLORES AZUL - LIGHTNESS
+   ============================================ */
+
+:root {
+  /* Azules principales - De más claro a más oscuro */
+  --color-sky-50: #E0F4FF;      /* Azul muy claro */
+  --color-sky-100: #B3E5FC;     /* Azul claro */
+  --color-sky-200: #4FC3F7;     /* Azul medio claro */
+  --color-sky-300: #0288D1;     /* Azul medio */
+  --color-sky-400: #01579B;     /* Azul oscuro */
+  --color-sky-500: #003D5C;     /* Azul muy oscuro */
+  --color-sky-600: #002838;     /* Azul casi negro */
+  
+  /* Colores primarios del sistema */
+  --color-primary-light: var(--color-sky-200);
+  --color-primary: var(--color-sky-300);
+  --color-primary-dark: var(--color-sky-400);
+  
+  /* Colores de fondo */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: var(--color-sky-50);
+  --bg-tertiary: var(--color-sky-100);
+  
+  /* Colores de texto */
+  --text-primary: var(--color-sky-600);
+  --text-secondary: var(--color-sky-400);
+  --text-tertiary: var(--color-sky-300);
+  --text-muted: #6B7280;
+  
+  /* Colores de estado */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: var(--color-sky-300);
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(1, 87, 155, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(1, 87, 155, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(1, 87, 155, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(1, 87, 155, 0.1);
+  
+  /* Bordes */
+  --border-light: var(--color-sky-100);
+  --border-medium: var(--color-sky-200);
+  --border-dark: var(--color-sky-300);
+}
+
+/* ============================================
+   RESET Y BASE
+   ============================================ */
+
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +66,163 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   UTILIDADES PERSONALIZADAS
+   ============================================ */
+
+/* Gradientes de la paleta */
+.gradient-blue-primary {
+  background: linear-gradient(135deg, var(--color-sky-200) 0%, var(--color-sky-300) 100%);
+}
+
+.gradient-blue-dark {
+  background: linear-gradient(135deg, var(--color-sky-300) 0%, var(--color-sky-400) 100%);
+}
+
+.gradient-blue-full {
+  background: linear-gradient(135deg, var(--color-sky-100) 0%, var(--color-sky-400) 100%);
+}
+
+/* Botón primario con la paleta */
+.btn-primary {
+  background-color: var(--color-sky-300);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-sky-400);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Botón secundario */
+.btn-secondary {
+  background-color: var(--color-sky-100);
+  color: var(--color-sky-400);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-sky-200);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-sky-200);
+  border-color: var(--color-sky-300);
+}
+
+/* Cards con la paleta */
+.card {
+  background-color: var(--bg-primary);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-medium);
+}
+
+/* Inputs con la paleta */
+.input-primary {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-light);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.input-primary:focus {
+  outline: none;
+  border-color: var(--color-sky-300);
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+}
+
+/* Badges con la paleta */
+.badge-primary {
+  background-color: var(--color-sky-100);
+  color: var(--color-sky-400);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--color-sky-200);
+}
+
+.badge-success {
+  background-color: #D1FAE5;
+  color: #065F46;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #A7F3D0;
+}
+
+.badge-warning {
+  background-color: #FEF3C7;
+  color: #92400E;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #FDE68A;
+}
+
+.badge-error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #FECACA;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes bounce-slow {
@@ -25,6 +234,149 @@ body {
   }
 }
 
+@keyframes pulse-blue {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(79, 195, 247, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
 .animate-bounce {
   animation: bounce-slow 2s infinite;
+}
+
+.animate-pulse-blue {
+  animation: pulse-blue 2s infinite;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-sky-200);
+  border-radius: 5px;
+  border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-sky-300);
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-sky-50) 0%,
+    var(--color-sky-100) 50%,
+    var(--color-sky-50) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.spinner {
+  border: 3px solid var(--color-sky-100);
+  border-top-color: var(--color-sky-300);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .card {
+    border-radius: 0.5rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* ============================================
+   MODO PRINT
+   ============================================ */
+
+@media print {
+  body {
+    background: white;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible para accesibilidad */
+*:focus-visible {
+  outline: 2px solid var(--color-sky-300);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   TRANSICIONES GLOBALES
+   ============================================ */
+
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }

@@ -122,7 +122,7 @@ function ECommerceMain({ onLogin }) {
     <div className="min-h-screen bg-gray-50">
       {/* HEADER - Ver código completo en el artifact */}
       <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2">
+        <div className="bg-gradient-to-r bg-sky-400 to-pink-500 text-white py-2">
           <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
@@ -137,7 +137,7 @@ function ECommerceMain({ onLogin }) {
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br bg-sky-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <ShoppingCart className="w-6 h-6 text-white" />
               </div>
               <div className="hidden md:block">
@@ -165,7 +165,7 @@ function ECommerceMain({ onLogin }) {
               {/* Botón de Login Admin */}
               <button 
                 onClick={onLogin}
-                className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r bg-sky-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
               >
                 <LogIn className="w-5 h-5" />
                 Admin
@@ -178,7 +178,7 @@ function ECommerceMain({ onLogin }) {
               >
                 <ShoppingCart className="w-6 h-6 text-gray-700" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r bg-sky-500 to-pink-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
@@ -197,7 +197,7 @@ function ECommerceMain({ onLogin }) {
                   onClick={() => setCategoriaFiltro(cat)}
                   className={`whitespace-nowrap px-4 py-2 rounded-lg font-medium transition-all ${
                     categoriaFiltro === cat
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-md'
+                      ? 'bg-gradient-to-r bg-sky-500 to-pink-500 text-white shadow-md'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -242,7 +242,7 @@ function ECommerceMain({ onLogin }) {
                   <img src={item.imagen || 'https://via.placeholder.com/80'} alt={item.nombre} className="w-20 h-20 object-cover rounded-lg" />
                   <div className="flex-1">
                     <h4 className="font-semibold">{item.nombre}</h4>
-                    <p className="text-purple-600 font-bold">S/ {item.precio.toFixed(2)}</p>
+                    <p className="text-sky-400 font-bold">S/ {item.precio.toFixed(2)}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <button onClick={() => actualizarCantidad(item.id, item.cantidad - 1)} className="w-8 h-8 border rounded-lg">
                         <Minus className="w-4 h-4 mx-auto" />
@@ -265,7 +265,7 @@ function ECommerceMain({ onLogin }) {
               <div className="border-t p-6 space-y-4">
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total:</span>
-                  <span className="text-purple-600">S/ {calcularTotal().toFixed(2)}</span>
+                  <span className="text-sky-400">S/ {calcularTotal().toFixed(2)}</span>
                 </div>
                 <button
                   onClick={enviarAWhatsApp}
@@ -320,11 +320,11 @@ function ProductoCard({ producto, onAgregar }) {
       </div>
 
       <div className="p-4">
-        <span className="text-xs text-purple-600 font-medium">{producto.categoria}</span>
+        <span className="text-xs text-sky-400 font-medium">{producto.categoria}</span>
         <h3 className="font-semibold text-gray-900 mt-1 mb-2 line-clamp-2">{producto.nombre}</h3>
         
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-2xl font-bold text-purple-600">
+          <span className="text-2xl font-bold text-sky-400">
             S/ {producto.precio.toFixed(2)}
           </span>
         </div>
@@ -337,7 +337,7 @@ function ProductoCard({ producto, onAgregar }) {
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : agregado
               ? 'bg-green-500 text-white'
-              : 'bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:shadow-lg'
+              : 'bg-gradient-to-r bg-sky-500 to-pink-500 text-white hover:shadow-lg'
           }`}
         >
           <ShoppingCart className="w-5 h-5" />

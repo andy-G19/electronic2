@@ -37,7 +37,7 @@ function VentasChart({ ventas }) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-900 mb-2">{payload[0].payload.fecha}</p>
-          <p className="text-sm text-indigo-600">
+          <p className="text-sm text-sky-400">
             Ventas: <span className="font-bold">S/ {payload[0].value.toFixed(2)}</span>
           </p>
           <p className="text-sm text-green-600">
@@ -54,7 +54,7 @@ function VentasChart({ ventas }) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-indigo-600" />
+            <TrendingUp className="w-5 h-5 text-sky-400" />
             Ventas Diarias
           </h3>
           <p className="text-sm text-gray-500 mt-1">Evolución de ventas en el período</p>

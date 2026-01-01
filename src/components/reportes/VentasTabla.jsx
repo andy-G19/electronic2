@@ -43,7 +43,7 @@ function VentasTabla({ ventas }) {
     const styles = {
       efectivo: 'bg-green-100 text-green-800',
       tarjeta: 'bg-blue-100 text-blue-800',
-      transferencia: 'bg-purple-100 text-purple-800',
+      transferencia: 'bg-sky-100 text-purple-800',
     };
     return styles[metodo] || 'bg-gray-100 text-gray-800';
   };
@@ -155,7 +155,7 @@ function VentasTabla({ ventas }) {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => setExpandedRow(expandedRow === venta.id ? null : venta.id)}
-                      className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      className="p-1.5 text-sky-400 hover:bg-sky-50 rounded-lg transition-colors"
                       title="Ver detalles"
                     >
                       <Eye className="w-4 h-4" />
@@ -178,7 +178,7 @@ function VentasTabla({ ventas }) {
                                   {prod.cantidad} x S/ {prod.precio.toFixed(2)}
                                 </p>
                               </div>
-                              <p className="font-bold text-indigo-600">
+                              <p className="font-bold text-sky-400">
                                 S/ {(prod.cantidad * prod.precio).toFixed(2)}
                               </p>
                             </div>

@@ -78,8 +78,8 @@ function PagoModal({ total, onClose, onConfirmar }) {
         <div className="p-6 space-y-6">
           {/* Total a pagar */}
           <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 text-center">
-            <p className="text-sm text-indigo-700 font-medium mb-2">Total a Pagar</p>
-            <p className="text-4xl font-bold text-indigo-600">S/ {total.toFixed(2)}</p>
+            <p className="text-sm text-sky-500 font-medium mb-2">Total a Pagar</p>
+            <p className="text-4xl font-bold text-sky-400">S/ {total.toFixed(2)}</p>
           </div>
 
           {/* Método de pago */}
@@ -94,7 +94,7 @@ function PagoModal({ total, onClose, onConfirmar }) {
                 const colorClasses = {
                   green: isSelected ? 'bg-green-100 border-green-500 text-green-700' : 'border-gray-300 text-gray-700',
                   blue: isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' : 'border-gray-300 text-gray-700',
-                  purple: isSelected ? 'bg-purple-100 border-purple-500 text-purple-700' : 'border-gray-300 text-gray-700',
+                  purple: isSelected ? 'bg-sky-100 border-purple-500 text-purple-700' : 'border-gray-300 text-gray-700',
                 };
 
                 return (
@@ -133,7 +133,7 @@ function PagoModal({ total, onClose, onConfirmar }) {
                     onChange={(e) => setMontoPagado(e.target.value)}
                     placeholder="0.00"
                     step="0.01"
-                    className={`w-full pl-12 pr-4 py-3 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                    className={`w-full pl-12 pr-4 py-3 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 ${
                       error ? 'border-red-500' : 'border-gray-300'
                     }`}
                     autoFocus
@@ -185,7 +185,7 @@ function PagoModal({ total, onClose, onConfirmar }) {
                 value={clienteNombre}
                 onChange={(e) => setClienteNombre(e.target.value)}
                 placeholder="Cliente General"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
               />
             </div>
 
@@ -198,7 +198,7 @@ function PagoModal({ total, onClose, onConfirmar }) {
                 value={clienteDocumento}
                 onChange={(e) => setClienteDocumento(e.target.value)}
                 placeholder="00000000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
               />
             </div>
           </div>
@@ -215,7 +215,7 @@ function PagoModal({ total, onClose, onConfirmar }) {
           <button
             onClick={handleConfirmar}
             disabled={metodoPago === 'efectivo' && parseFloat(montoPagado) < total}
-            className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Confirmar Venta
           </button>

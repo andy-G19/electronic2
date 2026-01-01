@@ -25,7 +25,7 @@ function CarritoPanel({ carrito, onActualizarCantidad, onEliminar, subtotal, igv
             <ShoppingCart className="w-5 h-5" />
             Carrito
           </h3>
-          <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium">
+          <span className="bg-sky-100 text-sky-500 px-3 py-1 rounded-full text-sm font-medium">
             {carrito.length} {carrito.length === 1 ? 'item' : 'items'}
           </span>
         </div>
@@ -61,14 +61,14 @@ function CarritoPanel({ carrito, onActualizarCantidad, onEliminar, subtotal, igv
         <div className="pt-4 border-t border-gray-200">
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-900">Total</span>
-            <span className="text-2xl font-bold text-indigo-600">S/ {total.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-sky-400">S/ {total.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Botón de pago */}
         <button
           onClick={onProcederPago}
-          className="w-full bg-indigo-600 text-white py-4 rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 font-semibold text-lg"
+          className="w-full bg-sky-300 text-white py-4 rounded-lg hover:bg-sky-400 transition-colors flex items-center justify-center gap-2 font-semibold text-lg"
         >
           <CreditCard className="w-5 h-5" />
           Proceder al Pago
@@ -148,7 +148,7 @@ function CarritoItem({ item, onActualizarCantidad, onEliminar }) {
         </div>
 
         <div className="text-right">
-          <p className="text-lg font-bold text-indigo-600">
+          <p className="text-lg font-bold text-sky-400">
             S/ {(item.precio * item.cantidad).toFixed(2)}
           </p>
         </div>

@@ -174,7 +174,7 @@ function UsuariosMain() {
             setEditingUsuario(null);
             setShowForm(true);
           }}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Nuevo Usuario
@@ -185,7 +185,7 @@ function UsuariosMain() {
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Users className="w-5 h-5 text-indigo-600" />
+            <Users className="w-5 h-5 text-sky-400" />
             <p className="text-sm text-gray-600">Total</p>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
@@ -203,7 +203,7 @@ function UsuariosMain() {
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Shield className="w-5 h-5 text-purple-600" />
+            <Shield className="w-5 h-5 text-sky-400" />
             <p className="text-sm text-gray-600">Admin</p>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.administradores}</p>
@@ -230,14 +230,14 @@ function UsuariosMain() {
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder="Buscar por nombre, email o ID..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
             />
           </div>
 
           <select
             value={filtroRol}
             onChange={(e) => setFiltroRol(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             <option value="">Todos los roles</option>
             {roles.map(rol => (
@@ -248,7 +248,7 @@ function UsuariosMain() {
           <select
             value={filtroEstado}
             onChange={(e) => setFiltroEstado(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             <option value="">Todos los estados</option>
             <option value="Activo">Activo</option>

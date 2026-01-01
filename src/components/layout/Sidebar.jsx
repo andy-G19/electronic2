@@ -30,7 +30,7 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
       {/* Logo */}
       <div className="p-6 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-sky-300 rounded-lg flex items-center justify-center">
             <Package className="w-6 h-6" />
           </div>
           <div>
@@ -54,7 +54,7 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
                   onClick={() => setActiveView(item.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-1 transition-all ${
                     isActive 
-                      ? 'bg-indigo-600 text-white shadow-lg' 
+                      ? 'bg-sky-300 text-white shadow-lg' 
                       : 'text-slate-300 hover:bg-slate-800'
                   }`}
                 >
@@ -70,7 +70,7 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
       {/* User Profile */}
       <div className="p-4 border-t border-slate-800">
         <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-800">
-          <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 bg-sky-300 rounded-full flex items-center justify-center font-bold text-sm">
             {usuario?.nombre?.split(' ').map(n => n[0]).join('') || 'US'}
           </div>
           <div className="flex-1 min-w-0">
