@@ -22,7 +22,7 @@ function TicketModal({ venta, onClose }) {
   const handleDescargar = () => {
     // Crear contenido del ticket
     const ticketContent = `
-ELECSALES - GESTIÓN v1.0
+Electronica Andy - GESTIÓN v1.0
 ${'='.repeat(40)}
 
 TICKET DE VENTA
@@ -55,7 +55,7 @@ ${venta.cambio > 0 ? `Cambio:         S/ ${venta.cambio.toFixed(2)}` : ''}
 
 ${'='.repeat(40)}
 ¡Gracias por su compra!
-www.elecsales.com
+www.Electronica Andy.com
     `.trim();
 
     // Descargar como archivo de texto
@@ -96,7 +96,7 @@ www.elecsales.com
           <div className="max-w-sm mx-auto bg-white border-2 border-dashed border-gray-300 rounded-lg p-6 font-mono text-sm">
             {/* Header del ticket */}
             <div className="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
-              <h2 className="text-xl font-bold mb-1">ELECSALES</h2>
+              <h2 className="text-xl font-bold mb-1">Electronica Andy</h2>
               <p className="text-xs text-gray-600">Gestión v1.0</p>
               <p className="text-xs text-gray-600 mt-2">Sistema de Punto de Venta</p>
             </div>
@@ -172,7 +172,7 @@ www.elecsales.com
             {/* Footer */}
             <div className="text-center border-t-2 border-dashed border-gray-300 pt-4 mt-4 space-y-1">
               <p className="text-xs font-semibold">¡Gracias por su compra!</p>
-              <p className="text-xs text-gray-600">www.elecsales.com</p>
+              <p className="text-xs text-gray-600">www.Electronica Andy.com</p>
               <p className="text-xs text-gray-600">Atención: Lun-Vie 9am-6pm</p>
             </div>
           </div>

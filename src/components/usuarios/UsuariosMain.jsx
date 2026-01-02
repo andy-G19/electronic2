@@ -10,7 +10,7 @@ function UsuariosMain() {
     {
       id: 'USR-001',
       nombre: 'Juan Perez',
-      email: 'juan.perez@elecsales.com',
+      email: 'juan.perez@Electronica Andy.com',
       rol: 'Administrador',
       telefono: '+51 987 654 321',
       estado: 'Activo',
@@ -28,7 +28,7 @@ function UsuariosMain() {
     {
       id: 'USR-002',
       nombre: 'María García',
-      email: 'maria.garcia@elecsales.com',
+      email: 'maria.garcia@Electronica Andy.com',
       rol: 'Vendedor',
       telefono: '+51 987 654 322',
       estado: 'Activo',
@@ -46,7 +46,7 @@ function UsuariosMain() {
     {
       id: 'USR-003',
       nombre: 'Carlos López',
-      email: 'carlos.lopez@elecsales.com',
+      email: 'carlos.lopez@Electronica Andy.com',
       rol: 'Supervisor',
       telefono: '+51 987 654 323',
       estado: 'Activo',
@@ -64,7 +64,7 @@ function UsuariosMain() {
     {
       id: 'USR-004',
       nombre: 'Ana Martínez',
-      email: 'ana.martinez@elecsales.com',
+      email: 'ana.martinez@Electronica Andy.com',
       rol: 'Vendedor',
       telefono: '+51 987 654 324',
       estado: 'Inactivo',

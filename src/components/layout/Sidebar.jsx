@@ -34,7 +34,7 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
             <Package className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold">ElecSales</h1>
+            <h1 className="text-xl font-bold">Electronica Andy</h1>
             <p className="text-xs text-slate-400">Gestión v1.0</p>
           </div>
         </div>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Package, Eye, EyeOff, Mail, Lock, AlertCircle, Shield, User, ShoppingCart } from 'lucide-react';
+import { 
+  Package, Eye, EyeOff, Mail, Lock, AlertCircle, 
+  ShieldCheck, UserCog, Store, ArrowLeft, CheckCircle2 
+} from 'lucide-react';
 
 function Login({ onLogin = () => {}, onBack }) {
   const [formData, setFormData] = useState({
@@ -10,48 +13,28 @@ function Login({ onLogin = () => {}, onBack }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Datos de usuario (Lógica original mantenida)
   const usuariosDemo = [
     {
-      email: 'admin@elecsales.com',
+      email: 'admin@Electronica Andy.com',
       password: 'admin123',
       nombre: 'Juan Pérez',
       rol: 'Administrador',
-      permisos: {
-        dashboard: true,
-        pos: true,
-        inventario: true,
-        reportes: true,
-        usuarios: true,
-        configuracion: true
-      }
+      permisos: { dashboard: true, pos: true, inventario: true, reportes: true, usuarios: true, configuracion: true }
     },
     {
-      email: 'supervisor@elecsales.com',
+      email: 'supervisor@Electronica Andy.com',
       password: 'super123',
       nombre: 'María García',
       rol: 'Supervisor',
-      permisos: {
-        dashboard: true,
-        pos: true,
-        inventario: true,
-        reportes: true,
-        usuarios: false,
-        configuracion: false
-      }
+      permisos: { dashboard: true, pos: true, inventario: true, reportes: true, usuarios: false, configuracion: false }
     },
     {
-      email: 'vendedor@elecsales.com',
+      email: 'vendedor@Electronica Andy.com',
       password: 'vende123',
       nombre: 'Carlos López',
       rol: 'Vendedor',
-      permisos: {
-        dashboard: true,
-        pos: true,
-        inventario: true,
-        reportes: false,
-        usuarios: false,
-        configuracion: false
-      }
+      permisos: { dashboard: true, pos: true, inventario: true, reportes: false, usuarios: false, configuracion: false }
     }
   ];
 
@@ -61,7 +44,8 @@ function Login({ onLogin = () => {}, onBack }) {
     setError('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
     setError('');
     setLoading(true);
 
@@ -78,296 +62,238 @@ function Login({ onLogin = () => {}, onBack }) {
           permisos: usuario.permisos
         });
       } else {
-        setError('Email o contraseña incorrectos');
+        setError('Credenciales incorrectas. Intenta con las cuentas demo.');
         setLoading(false);
       }
     }, 800);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
-
   const handleDemoLogin = (email, password) => {
     setFormData({ email, password });
+    // Pequeño delay visual para que se vea el llenado
     setTimeout(() => {
-      const usuario = usuariosDemo.find(u => u.email === email);
-      if (usuario) {
-        onLogin({
-          nombre: usuario.nombre,
-          email: usuario.email,
-          rol: usuario.rol,
-          permisos: usuario.permisos
-        });
-      }
-    }, 300);
+        handleSubmit();
+    }, 100);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-blue-full">
-      <div className="w-full max-w-6xl bg-white shadow-2xl rounded-3xl overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 font-sans text-slate-800 bg-cover bg-center relative"
+      style={{ 
+        // 1. AQUÍ VA LA URL DE TU IMAGEN DE FONDO
+        backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop')" 
+      }}
+    >
+      {/* 2. OVERLAY: Capa negra semitransparente para oscurecer la imagen y que resalte el login */}
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-0"></div>
+
+      {/* 3. CARD PRINCIPAL: Agregamos 'relative z-10' para que flote sobre el fondo */}
+      <div className="w-full max-w-5xl bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl overflow-hidden flex flex-col lg:flex-row min-h-[650px] relative z-10 transition-all hover:shadow-slate-300/50">
+        
+        {/* PANEL IZQUIERDO - DECORATIVO (Mantenemos el diseño oscuro para contraste) */}
+        <div className="relative lg:w-5/12 bg-slate-900 p-12 flex flex-col justify-between overflow-hidden text-white">
           
-          {/* Panel Izquierdo - Bienvenida */}
-          <div className="hidden lg:flex relative p-12 flex-col justify-center text-white overflow-hidden bg-gradient-blue-primary">
-            
-            {/* Elementos decorativos con la paleta */}
-            <div className="absolute top-10 right-10 w-32 h-32 bg-white opacity-10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 left-10 w-40 h-40 bg-sky-50 opacity-20 rounded-full blur-3xl"></div>
-            
-            {/* Formas geométricas */}
-            <div className="absolute w-24 h-3 bg-sky-100 rounded-full transform rotate-45 opacity-70 animate-pulse" style={{ top: '25%', right: '25%' }}></div>
-            <div className="absolute w-32 h-3 bg-sky-50 rounded-full transform -rotate-12 opacity-60" style={{ top: '33%', right: '33%' }}></div>
-            <div className="absolute w-20 h-20 bg-sky-200 rounded-full opacity-40 animate-bounce-slow" style={{ bottom: '33%', right: '25%' }}></div>
-            
-            {/* Iconos flotantes */}
-            <div className="absolute w-12 h-12 bg-white bg-opacity-20 backdrop-blur-md flex items-center justify-center rounded-xl animate-float" style={{ top: '50%', right: '5rem' }}>
-              <Package className="w-6 h-6 text-white" />
-            </div>
-            <div className="absolute w-12 h-12 bg-white bg-opacity-20 backdrop-blur-md flex items-center justify-center rounded-xl animate-float-delayed" style={{ bottom: '50%', left: '5rem' }}>
-              <ShoppingCart className="w-6 h-6 text-white" />
-            </div>
-            
-            {/* Logo y contenido */}
-            <div className="relative z-10 mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-25 backdrop-blur-lg mb-6 rounded-2xl shadow-xl">
-                <Package className="w-12 h-12 text-white" />
+          {/* Background Effects */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-[1px]"></div>
+
+          {/* Contenido */}
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-10 h-10 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Package className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-5xl font-bold mb-4 leading-tight">
-                Bienvenido a<br/>
-                <span className="text-sky-100">ElecSales</span>
-              </h1>
-              <div className="w-20 h-1 bg-white opacity-50 rounded-full mb-6"></div>
-              <p className="text-lg leading-relaxed max-w-md text-white text-opacity-90">
-                Sistema integral de gestión comercial. Administra tu inventario, 
-                ventas y reportes de manera eficiente y profesional.
-              </p>
+              <span className="font-bold text-xl tracking-tight">Electronica Andy</span>
             </div>
 
-            {/* Características */}
-            <div className="relative z-10 space-y-3 mb-8">
-              <div className="flex items-center gap-3 text-white text-opacity-90">
-                <div className="w-2 h-2 bg-sky-100 rounded-full"></div>
-                <span className="text-sm">Control total de inventario</span>
-              </div>
-              <div className="flex items-center gap-3 text-white text-opacity-90">
-                <div className="w-2 h-2 bg-sky-100 rounded-full"></div>
-                <span className="text-sm">Punto de venta integrado</span>
-              </div>
-              <div className="flex items-center gap-3 text-white text-opacity-90">
-                <div className="w-2 h-2 bg-sky-100 rounded-full"></div>
-                <span className="text-sm">Reportes en tiempo real</span>
-              </div>
-            </div>
+            <h1 className="text-4xl font-black leading-tight mb-6">
+              Gestiona tu negocio <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-pink-400">
+                sin límites.
+              </span>
+            </h1>
+            
+            <p className="text-slate-400 leading-relaxed mb-8">
+              Accede al panel de administración para controlar inventario, ventas y métricas en tiempo real.
+            </p>
 
-            {/* Footer */}
-            <div className="relative z-10 mt-auto">
-              <div className="w-full h-px bg-white opacity-20 mb-4"></div>
-              <p className="text-sm text-white text-opacity-70">
-                Sistema de Gestión v1.0 • © 2024 ElecSales
-              </p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl backdrop-blur-sm border border-white/10">
+                <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
+                <span className="text-sm font-medium">Control de Stock en vivo</span>
+              </div>
+              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl backdrop-blur-sm border border-white/10">
+                <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0" />
+                <span className="text-sm font-medium">Reportes Inteligentes</span>
+              </div>
             </div>
           </div>
 
-          {/* Panel Derecho - Formulario */}
-          <div className="p-6 lg:p-12 flex flex-col justify-center bg-gray-50">
-            <div className="w-full max-w-md mx-auto">
+          <div className="relative z-10 text-xs text-slate-500 mt-8">
+            © 2024 ElectronicAndy System v2.0
+          </div>
+        </div>
+
+        {/* PANEL DERECHO - FORMULARIO (Fondo blanco translúcido) */}
+        <div className="flex-1 p-8 lg:p-16 bg-white/50 flex flex-col justify-center relative">
+
+           {/* El resto del formulario sigue igual que antes... */}
+           {/* --- AQUÍ ESTÁ EL BOTÓN DE VOLVER --- */}
+          {onBack && (
+            <button 
+                onClick={onBack}
+                className="absolute top-8 right-8 flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-sky-600 transition-colors group"
+            >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+                Volver a tienda
+              </button>
+            )}
+          {/* ------------------------------------ */}
+           {/* ... (Botón volver, Inputs, etc.) ... */}
+           
+           {/* Solo asegúrate de copiar el contenido interior del formulario que te pasé antes aquí */}
+           
+           {/* COPIA AQUÍ EL CONTENIDO INTERNO DEL PANEL DERECHO DEL CÓDIGO ANTERIOR */}
+           {onBack && (
+            <button 
+              onClick={onBack}
+              className="absolute top-8 right-8 flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-sky-600 transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+              Volver a tienda
+            </button>
+          )}
+
+
+          <div className="max-w-md mx-auto w-full">
+            <div className="mb-10">
+              <h2 className="text-3xl font-bold text-slate-800 mb-2">Bienvenido de nuevo</h2>
+              <p className="text-slate-500">Ingresa tus credenciales para acceder.</p>
+            </div>
+
+            {error && (
+              <div className="mb-6 bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 flex items-start gap-3 animate-shake">
+                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                <p className="text-sm font-medium">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Input Email */}
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-slate-700 ml-1">Email Corporativo</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-sky-500 transition-colors" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="nombre@empresa.com"
+                    className="block w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 focus:bg-white transition-all outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Input Password */}
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-slate-700 ml-1">Contraseña</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-pink-500 transition-colors" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className="block w-full pl-11 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 focus:bg-white transition-all outline-none"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-pink-500 focus:ring-pink-500 cursor-pointer" />
+                  <span className="text-slate-500 group-hover:text-slate-700 transition-colors">Recordarme</span>
+                </label>
+                <a href="#" className="font-semibold text-sky-600 hover:text-sky-700 hover:underline">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Autenticando...</span>
+                  </>
+                ) : (
+                  <>Iniciando Sesión</>
+                )}
+              </button>
+            </form>
+
+            {/* SECCIÓN DEMO */}
+            <div className="mt-10 pt-8 border-t border-slate-100">
+              <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Acceso Rápido (Modo Demo)</p>
               
-              {/* Logo móvil */}
-              <div className="lg:hidden text-center mb-8">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-blue-primary flex items-center justify-center rounded-xl">
-                    <Package className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h1 className="text-xl font-bold text-sky-400">ElecSales</h1>
-                    <p className="text-xs text-gray-500">Sistema de Gestión v1.0</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón volver (si viene del e-commerce) */}
-              {onBack && (
+              <div className="grid grid-cols-3 gap-3">
                 <button
-                  onClick={onBack}
-                  className="mb-4 text-sky-300 hover:text-sky-400 flex items-center gap-2 text-sm font-medium"
+                  type="button"
+                  onClick={() => handleDemoLogin('admin@Electronica Andy.com', 'admin123')}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50 transition-all group"
                 >
-                  ← Volver a la tienda
+                  <div className="p-2 bg-purple-100 text-purple-600 rounded-full group-hover:scale-110 transition-transform">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-600 group-hover:text-purple-700">Admin</span>
                 </button>
-              )}
 
-              {/* Título */}
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-sky-100 rounded-2xl mb-4">
-                  <Lock className="w-8 h-8 text-sky-400" />
-                </div>
-                <h2 className="text-3xl font-bold text-sky-600 mb-2">Iniciar Sesión</h2>
-                <p className="text-gray-500">Ingresa tus credenciales para continuar</p>
-              </div>
-
-              {/* Error */}
-              {error && (
-                <div className="mb-6 bg-red-50 p-4 flex items-start gap-3 rounded-lg border-l-4 border-red-500">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm font-medium text-red-900">{error}</p>
-                </div>
-              )}
-
-              {/* Formulario */}
-              <div className="space-y-5">
-                
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico
-                  </label>
-                  <div className="relative">
-                    <Mail className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      onKeyPress={handleKeyPress}
-                      placeholder="tu@email.com"
-                      className="w-full pl-12 pr-4 py-3.5 bg-white border-2 border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:border-sky-300 focus:ring-4 focus:ring-sky-100 transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Contraseña
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      onKeyPress={handleKeyPress}
-                      placeholder="••••••••"
-                      className="w-full pl-12 pr-12 py-3.5 bg-white border-2 border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:border-sky-300 focus:ring-4 focus:ring-sky-100 transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Recordar / Olvidó */}
-                <div className="flex items-center justify-between text-sm pt-1">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 text-sky-300 border-gray-300 rounded focus:ring-sky-300" />
-                    <span className="text-gray-600">Recordarme</span>
-                  </label>
-                  <button className="font-medium text-sky-300 hover:text-sky-400">
-                    ¿Olvidaste tu contraseña?
-                  </button>
-                </div>
-
-                {/* Botón Login */}
                 <button
-                  onClick={handleSubmit}
-                  disabled={loading}
-                  className="w-full bg-gradient-blue-primary text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+                  type="button"
+                  onClick={() => handleDemoLogin('supervisor@Electronica Andy.com', 'super123')}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50 transition-all group"
                 >
-                  {loading ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Iniciando sesión...</span>
-                    </div>
-                  ) : (
-                    <span className="flex items-center justify-center gap-2">
-                      <Lock className="w-5 h-5" />
-                      INICIAR SESIÓN
-                    </span>
-                  )}
+                  <div className="p-2 bg-sky-100 text-sky-600 rounded-full group-hover:scale-110 transition-transform">
+                    <UserCog className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-600 group-hover:text-sky-700">Supervisor</span>
                 </button>
-              </div>
 
-              {/* Cuentas Demo */}
-              <div className="mt-8 pt-8 border-t-2 border-gray-200">
-                <p className="text-sm font-medium text-gray-700 text-center mb-4 flex items-center justify-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  Acceso rápido - Cuentas demo
-                </p>
-                <div className="space-y-2">
-                  
-                  {/* Admin */}
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin('admin@elecsales.com', 'admin123')}
-                    className="w-full px-4 py-3 bg-sky-50 text-sky-600 border-2 border-sky-200 rounded-xl font-medium hover:bg-sky-100 hover:border-sky-300 transition-all flex items-center justify-between group"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      Administrador
-                    </span>
-                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">admin@elecsales.com</span>
-                  </button>
-
-                  {/* Supervisor */}
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin('supervisor@elecsales.com', 'super123')}
-                    className="w-full px-4 py-3 bg-sky-50 text-sky-600 border-2 border-sky-200 rounded-xl font-medium hover:bg-sky-100 hover:border-sky-300 transition-all flex items-center justify-between group"
-                  >
-                    <span className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      Supervisor
-                    </span>
-                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">supervisor@elecsales.com</span>
-                  </button>
-
-                  {/* Vendedor */}
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin('vendedor@elecsales.com', 'vende123')}
-                    className="w-full px-4 py-3 bg-sky-50 text-sky-600 border-2 border-sky-200 rounded-xl font-medium hover:bg-sky-100 hover:border-sky-300 transition-all flex items-center justify-between group"
-                  >
-                    <span className="flex items-center gap-2">
-                      <ShoppingCart className="w-4 h-4" />
-                      Vendedor
-                    </span>
-                    <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">vendedor@elecsales.com</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin('vendedor@Electronica Andy.com', 'vende123')}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-pink-200 hover:bg-pink-50 transition-all group"
+                >
+                  <div className="p-2 bg-pink-100 text-pink-600 rounded-full group-hover:scale-110 transition-transform">
+                    <Store className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-600 group-hover:text-pink-700">Vendedor</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Animaciones CSS */}
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-15px); }
-        }
-        
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 5s ease-in-out infinite;
-          animation-delay: 1s;
-        }
-      `}</style>
+      </div>
     </div>
   );
 }

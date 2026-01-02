@@ -4,12 +4,12 @@ import { Settings, Building, DollarSign, Printer, Database, Save, Check } from '
 function ConfiguracionMain() {
   const [config, setConfig] = useState({
     // Información de la Empresa
-    nombreEmpresa: 'ElecSales',
+    nombreEmpresa: 'Electronica Andy',
     ruc: '20123456789',
     direccion: 'Av. Principal 123, Lima, Perú',
     telefono: '+51 987 654 321',
-    email: 'contacto@elecsales.com',
-    web: 'www.elecsales.com',
+    email: 'contacto@Electronica Andy.com',
+    web: 'www.Electronica Andy.com',
     
     // Configuración de Impuestos
     igv: 18,
@@ -17,7 +17,7 @@ function ConfiguracionMain() {
     simboloMoneda: 'S/',
     
     // Configuración del Sistema
-    nombreSistema: 'ElecSales - Gestión',
+    nombreSistema: 'Electronica Andy - Gestión',
     version: '1.0.0',
     stockMinimoPorDefecto: 5,
     

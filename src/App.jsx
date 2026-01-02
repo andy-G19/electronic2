@@ -52,7 +52,9 @@ function App() {
     return (
       <ProductosProvider>
         {showLogin ? (
-          <Login onLogin={handleLogin} />
+          <Login onLogin={handleLogin}
+          onBack={() => setShowLogin(false)}
+          />
         ) : (
           <ECommerceMain onLogin={() => setShowLogin(true)} />
         )}
