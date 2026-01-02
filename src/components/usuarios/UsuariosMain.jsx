@@ -9,8 +9,8 @@ function UsuariosMain() {
   const [usuarios, setUsuarios] = useState([
     {
       id: 'USR-001',
-      nombre: 'Juan Perez',
-      email: 'juan.perez@Electronica Andy.com',
+      nombre: 'Anderson Godoy',
+      email: 'andyg123@elec.com',
       rol: 'Administrador',
       telefono: '+51 987 654 321',
       estado: 'Activo',
@@ -27,8 +27,8 @@ function UsuariosMain() {
     },
     {
       id: 'USR-002',
-      nombre: 'María García',
-      email: 'maria.garcia@Electronica Andy.com',
+      nombre: 'María Isabel',
+      email: 'maria.garcia@elec.com',
       rol: 'Vendedor',
       telefono: '+51 987 654 322',
       estado: 'Activo',
@@ -46,7 +46,7 @@ function UsuariosMain() {
     {
       id: 'USR-003',
       nombre: 'Carlos López',
-      email: 'carlos.lopez@Electronica Andy.com',
+      email: 'carlos.lopez@elec.com',
       rol: 'Supervisor',
       telefono: '+51 987 654 323',
       estado: 'Activo',
