@@ -16,9 +16,9 @@ function Login({ onLogin = () => {}, onBack }) {
   // Datos de usuario (Lógica original mantenida)
   const usuariosDemo = [
     {
-      email: 'admin@Electronica Andy.com',
+      email: 'andyg123@elec.com',
       password: 'admin123',
-      nombre: 'Juan Pérez',
+      nombre: 'Anderson Godoy',
       rol: 'Administrador',
       permisos: { dashboard: true, pos: true, inventario: true, reportes: true, usuarios: true, configuracion: true }
     },

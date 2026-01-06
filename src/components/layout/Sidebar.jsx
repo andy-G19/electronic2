@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, ShoppingCart, BarChart3, Users, Settings } from 'lucide-react';
+import { Package, ShoppingCart, BarChart3, Users, Settings} from 'lucide-react';
 
 function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
   const menuItems = [
@@ -26,6 +26,7 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
   }, {});
 
   return (
+    
     <div className={`${isOpen ? 'w-72' : 'w-0'} transition-all duration-300 bg-slate-900 text-white flex flex-col overflow-hidden`}>
       {/* Logo */}
       <div className="p-6 border-b border-slate-800">
