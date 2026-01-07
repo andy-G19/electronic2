@@ -3,7 +3,7 @@ import {
   ShoppingCart, Search, X, MessageCircle, 
   Plus, Minus, Trash2, LogIn, 
   Zap, Star, Filter, ArrowRight,
-  Facebook, Instagram, Twitter, MapPin, Mail, Phone, Menu, User
+  Facebook, Instagram, Twitter, MapPin, Mail, Phone, User, Truck
 } from 'lucide-react';
 
 // Importar datos desde tu contexto
@@ -18,8 +18,16 @@ function ECommerceMain({ onLogin }) {
   const [ordenar, setOrdenar] = useState('destacado');
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
 
+  // Obtener categorías
   const categorias = ['Todos', ...new Set(productos.map(p => p.categoria))];
 
+  // === HELPER DE PRECIO SEGURO (Tu lógica antigua) ===
+  const getPrecio = (p) => {
+    // Prioriza 'precio', luego 'precioVenta', o devuelve 0
+    return parseFloat(p.precio || p.precioVenta || 0);
+  };
+
+  // Filtrado y Ordenamiento
   const productosFiltrados = useMemo(() => {
     let prods = productos.filter(p => {
       const matchBusqueda = p.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -29,14 +37,15 @@ function ECommerceMain({ onLogin }) {
     });
 
     switch (ordenar) {
-      case 'precio-asc': prods.sort((a, b) => a.precio - b.precio); break;
-      case 'precio-desc': prods.sort((a, b) => b.precio - a.precio); break;
+      case 'precio-asc': prods.sort((a, b) => getPrecio(a) - getPrecio(b)); break;
+      case 'precio-desc': prods.sort((a, b) => getPrecio(b) - getPrecio(a)); break;
       case 'nombre': prods.sort((a, b) => a.nombre.localeCompare(b.nombre)); break;
       default: break;
     }
     return prods;
   }, [productos, busqueda, categoriaFiltro, ordenar]);
 
+  // Carrito: Lógica
   const agregarAlCarrito = (producto) => {
     const itemExistente = carrito.find(item => item.id === producto.id);
     if (itemExistente) {
@@ -59,62 +68,62 @@ function ECommerceMain({ onLogin }) {
   };
 
   const eliminarDelCarrito = (id) => setCarrito(carrito.filter(item => item.id !== id));
-  const calcularTotal = () => carrito.reduce((sum, item) => sum + (item.precioVent * item.cantidad), 0);
+
+  // Cálculos de Totales y Envío
+  const totalActual = carrito.reduce((sum, item) => sum + (getPrecio(item) * item.cantidad), 0);
   const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+  
+  const META_ENVIO_GRATIS = 200;
+  const porcentajeEnvio = Math.min((totalActual / META_ENVIO_GRATIS) * 100, 100);
+  const faltaParaEnvio = Math.max(META_ENVIO_GRATIS - totalActual, 0);
 
   const enviarAWhatsApp = () => {
     if (carrito.length === 0) return;
     let mensaje = '👋 *Hola Electronica Andy, quiero realizar el siguiente pedido:*%0A%0A';
     carrito.forEach((item) => {
-      mensaje += `▪️ ${item.cantidad}x *${item.nombre}* - S/ ${(item.precio * item.cantidad).toFixed(2)}%0A`;
+      const precioUnit = getPrecio(item);
+      mensaje += `▪️ ${item.cantidad}x *${item.nombre}* (S/ ${precioUnit.toFixed(2)}) → S/ ${(precioUnit * item.cantidad).toFixed(2)}%0A`;
     });
-    mensaje += `%0A💰 *Total a pagar: S/ ${calcularTotal().toFixed(2)}*%0A%0A📍 *Dirección de envío:* (Indicar aquí)`;
+    mensaje += `%0A💰 *Subtotal: S/ ${totalActual.toFixed(2)}*%0A`;
+    if(totalActual >= META_ENVIO_GRATIS) {
+        mensaje += `🚚 *¡Envío Gratis Aplicado!*%0A`;
+    } else {
+        mensaje += `📦 *Envío: Por calcular*%0A`;
+    }
+    mensaje += `====================%0A*TOTAL A PAGAR: S/ ${totalActual.toFixed(2)}*%0A====================%0A%0A📍 *Dirección de envío:* (Indicar aquí)`;
+    
     window.open(`https://wa.me/51957123815?text=${mensaje}`, '_blank');
   };
 
   return (
-    // FONDO GLOBAL CON IMAGEN Y OVERLAY
     <div 
       className="min-h-screen font-sans text-slate-800 bg-fixed bg-cover bg-center relative"
       style={{ 
         backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop')" 
       }}
     >
-      {/* OVERLAY OSCURO */}
       <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] z-0 pointer-events-none"></div>
 
-      {/* WRAPPER PRINCIPAL */}
       <div className="relative z-10 flex flex-col min-h-screen">
         
-        {/* === HEADER RESPONSIVO === */}
+        {/* HEADER */}
         <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-slate-900/40 border-b border-white/10 shadow-lg transition-all duration-300 text-white">
           <div className="bg-gradient-to-r from-sky-600/90 to-pink-600/90 text-white py-1.5 px-4 text-[10px] sm:text-xs font-medium text-center tracking-wide backdrop-blur-sm">
-            🚀 Envíos gratis por compras mayores a S/ 200.00
+            🚀 Envíos gratis por compras mayores a S/ {META_ENVIO_GRATIS}.00
           </div>
-          
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Contenedor Flex que cambia dirección en móvil */}
             <div className="flex flex-col md:flex-row justify-between items-center py-4 md:h-24 gap-4 md:gap-8">
-              
-              {/* Fila Superior Móvil: Logo + Botones Acción */}
               <div className="flex justify-between items-center w-full md:w-auto">
-                {/* Logo */}
                 <div className="flex items-center gap-3 shrink-0 cursor-pointer group">
                   <div className="relative w-10 h-10 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-pink-500/30 transition-all duration-300 group-hover:scale-105">
                     <ShoppingCart className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex flex-col">
-                    <h1 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
-                      Electronica Andy
-                    </h1>
-                  </div>
+                  <h1 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
+                    Electronica Andy
+                  </h1>
                 </div>
-
-                {/* Botones Móvil (Carrito) */}
                 <div className="flex md:hidden items-center gap-3">
-                    <button onClick={onLogin} className="p-2 text-slate-300 hover:text-white">
-                        <User className="w-5 h-5" />
-                    </button>
+                    <button onClick={onLogin} className="p-2 text-slate-300 hover:text-white"><User className="w-5 h-5" /></button>
                     <button onClick={() => setMostrarCarrito(true)} className="relative p-2 bg-white/10 rounded-full">
                         <ShoppingCart className="w-5 h-5 text-white" />
                         {totalItems > 0 && (
@@ -126,7 +135,6 @@ function ECommerceMain({ onLogin }) {
                 </div>
               </div>
 
-              {/* Buscador (Ancho completo en móvil, flexible en PC) */}
               <div className="w-full md:flex-1 md:max-w-xl relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Search className="h-5 w-5 text-slate-300 group-focus-within:text-pink-400 transition-colors" />
@@ -140,7 +148,6 @@ function ECommerceMain({ onLogin }) {
                 />
               </div>
 
-              {/* Botones Desktop (Ocultos en móvil) */}
               <div className="hidden md:flex items-center gap-4">
                 <button onClick={onLogin} className="flex items-center gap-2 text-sm font-semibold text-slate-200 hover:text-white transition-colors bg-white/10 px-4 py-2 rounded-full hover:bg-white/20">
                   <LogIn className="w-4 h-4" /> Staff
@@ -156,8 +163,6 @@ function ECommerceMain({ onLogin }) {
               </div>
             </div>
           </div>
-
-          {/* Categorías con Scroll Horizontal (Instagram Style) */}
           <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar mask-fade-sides pb-2">
               {categorias.map(cat => (
@@ -177,7 +182,7 @@ function ECommerceMain({ onLogin }) {
           </div>
         </header>
 
-        {/* === HERO SECTION RESPONSIVO === */}
+        {/* HERO */}
         {!busqueda && categoriaFiltro === 'Todos' && (
           <div className="relative overflow-hidden mb-8 border-b border-white/10 bg-slate-900/30 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-6 py-12 sm:py-24 relative z-10 text-center sm:text-left">
@@ -197,7 +202,7 @@ function ECommerceMain({ onLogin }) {
           </div>
         )}
 
-        {/* === CONTENIDO PRINCIPAL === */}
+        {/* MAIN */}
         <main className="max-w-7xl mx-auto px-4 pb-20 pt-6 flex-1 w-full">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
             <div>
@@ -208,7 +213,6 @@ function ECommerceMain({ onLogin }) {
                 </span>
               </h3>
             </div>
-            
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-2 rounded-lg border border-white/10 shadow-sm w-full sm:w-auto">
               <Filter className="w-4 h-4 text-slate-300" />
               <select 
@@ -219,13 +223,11 @@ function ECommerceMain({ onLogin }) {
                 <option value="destacado">Destacados</option>
                 <option value="precio-asc">Menor Precio</option>
                 <option value="precio-desc">Mayor Precio</option>
-                <option value="nombre">Nombre (A-Z)</option>
               </select>
             </div>
           </div>
 
           {productosFiltrados.length > 0 ? (
-            // Grid Responsivo: 1 col (móvil) -> 2 cols (tablet) -> 3 cols (desktop) -> 4 cols (XL)
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               {productosFiltrados.map(producto => (
                 <ProductoCard key={producto.id} producto={producto} onAgregar={agregarAlCarrito} />
@@ -242,11 +244,9 @@ function ECommerceMain({ onLogin }) {
           )}
         </main>
 
-        {/* === FOOTER === */}
+        {/* FOOTER */}
         <footer className="mt-auto bg-black/40 backdrop-blur-xl border-t border-white/10 pt-16 pb-8 text-sm text-slate-300">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            
-            {/* Col 1: Marca */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-lg flex items-center justify-center">
@@ -255,28 +255,15 @@ function ECommerceMain({ onLogin }) {
                 <h4 className="text-white font-bold text-lg">Electronica Andy</h4>
               </div>
               <p className="opacity-70 leading-relaxed text-slate-400">
-                Tu tienda de confianza para componentes electrónicos, robótica e innovación. Calidad y soporte garantizado.
+                Tu tienda de confianza para componentes electrónicos.
               </p>
             </div>
-
-            {/* Col 2: Enlaces */}
-            <div>
-              <h4 className="text-white font-bold text-lg mb-6">Navegación</h4>
-              <ul className="space-y-3">
-                <li><button onClick={() => {setBusqueda(''); setCategoriaFiltro('Todos')}} className="hover:text-pink-400 transition-colors flex items-center gap-2">Inicio</button></li>
-                <li><button className="hover:text-pink-400 transition-colors flex items-center gap-2">Catálogo Completo</button></li>
-                <li><button className="hover:text-pink-400 transition-colors flex items-center gap-2">Ofertas del Mes</button></li>
-                <li><button onClick={onLogin} className="hover:text-sky-400 transition-colors flex items-center gap-2">Acceso Administrativo</button></li>
-              </ul>
-            </div>
-
-            {/* Col 3: Contacto */}
             <div>
               <h4 className="text-white font-bold text-lg mb-6">Contáctanos</h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-sky-500 shrink-0" />
-                  <span>Av. Garcilaso de la Vega 1234, Centro de Lima, Perú</span>
+                  <span>Av. Garcilaso de la Vega 1234, Lima</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-sky-500 shrink-0" />
@@ -284,104 +271,134 @@ function ECommerceMain({ onLogin }) {
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-sky-500 shrink-0" />
-                  <span>ventas@Electronica Andy.com</span>
+                  <span>ventas@electronicaandy.com</span>
                 </li>
               </ul>
             </div>
-
-            {/* Col 4: Social */}
             <div>
               <h4 className="text-white font-bold text-lg mb-6">Síguenos</h4>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-sky-600 flex items-center justify-center transition-all hover:-translate-y-1 text-white">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-pink-600 flex items-center justify-center transition-all hover:-translate-y-1 text-white">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-sky-400 flex items-center justify-center transition-all hover:-translate-y-1 text-white">
-                  <Twitter className="w-5 h-5" />
-                </a>
-              </div>
-              <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
-                <p className="text-xs text-slate-400 mb-2">Suscríbete a nuestro boletín</p>
-                <div className="flex gap-2">
-                  <input type="email" placeholder="Email" className="bg-black/30 w-full rounded-lg px-3 py-1 text-sm border border-white/10 focus:outline-none focus:border-sky-500" />
-                  <button className="bg-sky-600 px-3 py-1 rounded-lg text-white text-xs hover:bg-sky-500">OK</button>
-                </div>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-sky-600 flex items-center justify-center transition-all hover:-translate-y-1 text-white"><Facebook className="w-5 h-5" /></a>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-pink-600 flex items-center justify-center transition-all hover:-translate-y-1 text-white"><Instagram className="w-5 h-5" /></a>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-sky-400 flex items-center justify-center transition-all hover:-translate-y-1 text-white"><Twitter className="w-5 h-5" /></a>
               </div>
             </div>
           </div>
-
-          <div className="border-t border-white/10 pt-8 text-center">
-            <p className="opacity-50 text-xs">
-              &copy; {new Date().getFullYear()} Electronica Andy Technology. Todos los derechos reservados.
-            </p>
+          <div className="border-t border-white/10 pt-8 text-center opacity-50 text-xs">
+            &copy; {new Date().getFullYear()} Electronica Andy. Todos los derechos reservados.
           </div>
         </footer>
 
-        {/* === DRAWER DEL CARRITO (W-FULL en móvil) === */}
+        {/* === DRAWER CARRITO DETALLADO (Diseño "tipo así") === */}
         {mostrarCarrito && (
           <div className="fixed inset-0 z-50 flex justify-end">
             <div 
               className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
               onClick={() => setMostrarCarrito(false)}
             />
-            {/* max-w-md limita en escritorio, w-full llena en móvil */}
             <div className="relative w-full max-w-md bg-white/95 backdrop-blur-xl h-full shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-in-right border-l border-white/20">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between z-10">
+              
+              {/* Header Carrito */}
+              <div className="p-5 border-b border-slate-100 flex items-center justify-between z-10 bg-white/80 backdrop-blur-md">
                 <div className="flex items-center gap-3">
                   <div className="bg-sky-100 p-2 rounded-full">
                     <ShoppingCart className="w-5 h-5 text-sky-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800">Tu Carrito</h3>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800">Tu Carrito</h3>
+                    <p className="text-xs text-slate-500">{totalItems} productos</p>
+                  </div>
                 </div>
-                <button onClick={() => setMostrarCarrito(false)} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
+                <button onClick={() => setMostrarCarrito(false)} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto p-6 space-y-6">
+
+              {/* Barra de Envío Gratis */}
+              <div className="px-5 py-4 bg-sky-50 border-b border-sky-100">
+                <div className="flex justify-between text-xs font-bold text-sky-700 mb-2">
+                  <span>{faltaParaEnvio > 0 ? `Falta S/ ${faltaParaEnvio.toFixed(2)} para envío gratis` : '¡Tienes envío gratis!'}</span>
+                  <span className="flex items-center gap-1"><Truck className="w-3 h-3"/> {Math.round(porcentajeEnvio)}%</span>
+                </div>
+                <div className="w-full bg-sky-200 rounded-full h-2.5 overflow-hidden">
+                  <div 
+                    className={`h-full rounded-full transition-all duration-500 ${porcentajeEnvio >= 100 ? 'bg-green-500' : 'bg-sky-500'}`}
+                    style={{ width: `${porcentajeEnvio}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Lista de Items Detallada */}
+              <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50">
                 {carrito.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-60">
-                    <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center">
+                    <div className="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center">
                       <ShoppingCart className="w-10 h-10 text-slate-400" />
                     </div>
-                    <p className="text-lg font-medium">Tu carrito está vacío</p>
+                    <p className="text-lg font-medium text-slate-600">Tu carrito está vacío</p>
                   </div>
                 ) : (
-                  carrito.map(item => (
-                    <div key={item.id} className="flex gap-4 group">
-                      <div className="w-24 h-24 bg-white rounded-xl border border-slate-200 overflow-hidden shrink-0 p-2">
-                        <img src={item.imagen} alt={item.nombre} className="w-full h-full object-contain mix-blend-multiply" />
-                      </div>
-                      <div className="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                          <h4 className="font-bold text-slate-800 line-clamp-2 leading-tight mb-1">{item.nombre}</h4>
-                          <p className="text-sm text-slate-500">Unitario: S/ {item.precio.toFixed(2)}</p>
+                  carrito.map(item => {
+                    const precioUnit = getPrecio(item);
+                    return (
+                      <div key={item.id} className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex gap-3 group transition-all hover:shadow-md hover:border-sky-200">
+                        {/* Imagen */}
+                        <div className="w-20 h-20 bg-gray-50 rounded-xl overflow-hidden shrink-0 border border-slate-100 p-1">
+                          <img src={item.imagen} alt={item.nombre} className="w-full h-full object-contain mix-blend-multiply" />
                         </div>
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center gap-3 bg-slate-100 rounded-lg px-2 py-1">
-                            <button onClick={() => actualizarCantidad(item.id, item.cantidad - 1)} className="p-1 hover:text-sky-600"><Minus className="w-3 h-3" /></button>
-                            <span className="text-sm font-bold w-4 text-center">{item.cantidad}</span>
-                            <button onClick={() => actualizarCantidad(item.id, item.cantidad + 1)} className="p-1 hover:text-sky-600"><Plus className="w-3 h-3" /></button>
+                        
+                        {/* Detalles */}
+                        <div className="flex-1 flex flex-col justify-between min-w-0">
+                          <div>
+                            <p className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">{item.categoria}</p>
+                            <h4 className="font-bold text-slate-800 text-sm line-clamp-2 leading-tight">{item.nombre}</h4>
                           </div>
-                          <p className="font-bold text-sky-600">S/ {(item.precio * item.cantidad).toFixed(2)}</p>
+                          
+                          <div className="flex items-end justify-between mt-2">
+                            {/* Control Cantidad */}
+                            <div className="flex items-center gap-2 bg-slate-100 rounded-lg p-1 border border-slate-200">
+                              <button onClick={() => actualizarCantidad(item.id, item.cantidad - 1)} className="w-6 h-6 flex items-center justify-center bg-white rounded-md shadow-sm hover:text-sky-600 transition-colors"><Minus className="w-3 h-3" /></button>
+                              <span className="text-xs font-bold w-4 text-center">{item.cantidad}</span>
+                              <button onClick={() => actualizarCantidad(item.id, item.cantidad + 1)} className="w-6 h-6 flex items-center justify-center bg-white rounded-md shadow-sm hover:text-sky-600 transition-colors"><Plus className="w-3 h-3" /></button>
+                            </div>
+                            
+                            {/* Precio Desglosado */}
+                            <div className="text-right">
+                              <p className="text-[10px] text-slate-400">S/ {precioUnit.toFixed(2)} x {item.cantidad}</p>
+                              <p className="font-bold text-sky-600 text-base">S/ {(precioUnit * item.cantidad).toFixed(2)}</p>
+                            </div>
+                          </div>
                         </div>
+                        
+                        {/* Eliminar */}
+                        <button onClick={() => eliminarDelCarrito(item.id)} className="self-start -mt-1 -mr-1 p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
-                      <button onClick={() => eliminarDelCarrito(item.id)} className="self-start text-slate-300 hover:text-red-500 p-1"><Trash2 className="w-4 h-4" /></button>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
+              
+              {/* Footer Resumen */}
               {carrito.length > 0 && (
-                <div className="border-t border-slate-100 p-6 bg-slate-50/50 space-y-4">
+                <div className="border-t border-slate-100 bg-white p-6 space-y-4 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
                   <div className="space-y-2">
-                    <div className="flex justify-between text-xl font-black text-slate-900">
+                    <h4 className="font-bold text-slate-900 mb-3">Resumen del Pedido</h4>
+                    <div className="flex justify-between text-sm text-slate-500">
+                      <span>Subtotal ({totalItems} items)</span>
+                      <span>S/ {totalActual.toFixed(2)}</span>
+                    </div>
+                     <div className="flex justify-between text-sm text-green-600 font-medium">
+                      <span>Costo de Envío</span>
+                      <span>{totalActual >= META_ENVIO_GRATIS ? 'GRATIS' : 'Por calcular'}</span>
+                    </div>
+                    <div className="flex justify-between text-xl font-black text-slate-900 pt-3 border-t border-dashed border-slate-200">
                       <span>Total</span>
-                      <span>S/ {calcularTotal().toFixed(2)}</span>
+                      <span>S/ {totalActual.toFixed(2)}</span>
                     </div>
                   </div>
-                  <button onClick={enviarAWhatsApp} className="w-full bg-[#25D366] hover:bg-[#1fae53] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-green-500/20 transform active:scale-95 transition-all">
+                  <button onClick={enviarAWhatsApp} className="w-full bg-[#25D366] hover:bg-[#1fae53] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-green-500/20 transform active:scale-[0.98] transition-all">
                     <MessageCircle className="w-5 h-5" /> Completar pedido por WhatsApp
                   </button>
                 </div>
@@ -390,28 +407,22 @@ function ECommerceMain({ onLogin }) {
           </div>
         )}
 
-        {/* FAB WHATSAPP (Solo aparece si el carrito está cerrado y tiene items) */}
-        {!mostrarCarrito && carrito.length > 0 && (
-          <button onClick={() => setMostrarCarrito(true)} className="fixed bottom-8 right-8 bg-white text-slate-900 p-4 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform z-40 flex items-center gap-2 group animate-bounce-slow">
-            <ShoppingCart className="w-6 h-6 text-pink-500" />
-            <span className="font-bold pr-1">S/ {calcularTotal().toFixed(2)}</span>
-          </button>
-        )}
       </div>
     </div>
   );
 }
 
-// TARJETA DE PRODUCTO
+// TARJETA DE PRODUCTO SEGURA
 function ProductoCard({ producto, onAgregar }) {
   const [agregado, setAgregado] = useState(false);
   const handleAgregar = () => { onAgregar(producto); setAgregado(true); setTimeout(() => setAgregado(false), 1500); };
+  
   const stock = producto.stock || 0;
   const isStockLow = stock > 0 && stock < 5;
   const isOutOfStock = stock === 0;
 
-  // Lógica segura de precios
-  const precio = parseFloat(producto.precioVenta || producto.precio || 0);
+  // 🛡️ CORRECCIÓN PRECIOS (Usa p.precio primero)
+  const precio = parseFloat(producto.precio || producto.precioVenta || 0);
   const precioDisplay = isNaN(precio) ? '0.00' : precio.toFixed(2);
 
   return (
