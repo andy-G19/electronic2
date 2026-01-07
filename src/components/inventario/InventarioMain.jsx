@@ -15,6 +15,7 @@ function InventarioMain() {
     obtenerEstadisticas 
   } = useProductos();
 
+  // Estados UI
   const [showForm, setShowForm] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedProducto, setSelectedProducto] = useState(null);
@@ -24,7 +25,7 @@ function InventarioMain() {
     search: '',
     categoria: '',
     proveedor: '',
-    estado: '',
+    estado: ''
   });
 
   const stats = obtenerEstadisticas();

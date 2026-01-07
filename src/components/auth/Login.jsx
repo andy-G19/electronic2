@@ -13,7 +13,7 @@ function Login({ onLogin = () => {}, onBack }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Datos de usuario (Lógica original mantenida)
+  // Datos de usuario (Originales)
   const usuariosDemo = [
     {
       email: 'andyg123@elec.com',
@@ -23,276 +23,273 @@ function Login({ onLogin = () => {}, onBack }) {
       permisos: { dashboard: true, pos: true, inventario: true, reportes: true, usuarios: true, configuracion: true }
     },
     {
-      email: 'supervisor@Electronica Andy.com',
+      email: 'supervisor@elec.com',
       password: 'super123',
       nombre: 'María García',
       rol: 'Supervisor',
       permisos: { dashboard: true, pos: true, inventario: true, reportes: true, usuarios: false, configuracion: false }
     },
     {
-      email: 'vendedor@Electronica Andy.com',
+      email: 'vendedor@elec.com',
       password: 'vende123',
-      nombre: 'Carlos López',
+      nombre: 'Juan Pérez',
       rol: 'Vendedor',
       permisos: { dashboard: true, pos: true, inventario: true, reportes: false, usuarios: false, configuracion: false }
     }
   ];
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
     setError('');
   };
 
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
     setLoading(true);
 
     setTimeout(() => {
-      const usuario = usuariosDemo.find(
+      const usuarioEncontrado = usuariosDemo.find(
         u => u.email === formData.email && u.password === formData.password
       );
 
-      if (usuario) {
-        onLogin({
-          nombre: usuario.nombre,
-          email: usuario.email,
-          rol: usuario.rol,
-          permisos: usuario.permisos
-        });
+      if (usuarioEncontrado) {
+        onLogin(usuarioEncontrado);
       } else {
-        setError('Credenciales incorrectas. Intenta con las cuentas demo.');
+        setError('Credenciales inválidas. Por favor verifique.');
         setLoading(false);
       }
-    }, 800);
+    }, 1000);
   };
 
   const handleDemoLogin = (email, password) => {
     setFormData({ email, password });
-    // Pequeño delay visual para que se vea el llenado
-    setTimeout(() => {
-        handleSubmit();
-    }, 100);
+    setError('');
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center p-4 font-sans text-slate-800 bg-cover bg-center relative"
-      style={{ 
-        // 1. AQUÍ VA LA URL DE TU IMAGEN DE FONDO
-        backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop')" 
-      }}
-    >
-      {/* 2. OVERLAY: Capa negra semitransparente para oscurecer la imagen y que resalte el login */}
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-0"></div>
-
-      {/* 3. CARD PRINCIPAL: Agregamos 'relative z-10' para que flote sobre el fondo */}
-      <div className="w-full max-w-5xl bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl overflow-hidden flex flex-col lg:flex-row min-h-[650px] relative z-10 transition-all hover:shadow-slate-300/50">
+    <div className="min-h-screen bg-white flex font-sans">
+      
+      {/* === SECCIÓN IZQUIERDA (Formulario) === */}
+      {/* w-full en móvil para ocupar todo, lg:w-1/2 en escritorio */}
+      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 w-full lg:w-1/2 relative bg-white">
         
-        {/* PANEL IZQUIERDO - DECORATIVO (Mantenemos el diseño oscuro para contraste) */}
-        <div className="relative lg:w-5/12 bg-slate-900 p-12 flex flex-col justify-between overflow-hidden text-white">
+        {/* Botón Volver */}
+        <button 
+          onClick={onBack}
+          className="absolute top-6 left-6 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-full transition-all flex items-center gap-2 group z-10"
+        >
+          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+          <span className="hidden sm:inline text-sm font-medium">Volver a la tienda</span>
+        </button>
+
+        <div className="mx-auto w-full max-w-sm lg:w-96">
           
-          {/* Background Effects */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-[1px]"></div>
-
-          {/* Contenido */}
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                <Package className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-bold text-xl tracking-tight">Electronica Andy</span>
+          {/* Header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 shadow-xl shadow-sky-200 mb-6 transform hover:scale-105 transition-transform duration-300">
+              <Package className="w-8 h-8 text-white" />
             </div>
-
-            <h1 className="text-4xl font-black leading-tight mb-6">
-              Gestiona tu negocio <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-pink-400">
-                sin límites.
-              </span>
-            </h1>
-            
-            <p className="text-slate-400 leading-relaxed mb-8">
-              Accede al panel de administración para controlar inventario, ventas y métricas en tiempo real.
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Bienvenido</h2>
+            <p className="mt-2 text-sm text-slate-500 font-medium">
+              Ingresa a tu panel de control administrativo
             </p>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl backdrop-blur-sm border border-white/10">
-                <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
-                <span className="text-sm font-medium">Control de Stock en vivo</span>
-              </div>
-              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl backdrop-blur-sm border border-white/10">
-                <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0" />
-                <span className="text-sm font-medium">Reportes Inteligentes</span>
-              </div>
-            </div>
           </div>
 
-          <div className="relative z-10 text-xs text-slate-500 mt-8">
-            © 2024 ElectronicAndy System v2.0
-          </div>
-        </div>
-
-        {/* PANEL DERECHO - FORMULARIO (Fondo blanco translúcido) */}
-        <div className="flex-1 p-8 lg:p-16 bg-white/50 flex flex-col justify-center relative">
-
-           {/* El resto del formulario sigue igual que antes... */}
-           {/* --- AQUÍ ESTÁ EL BOTÓN DE VOLVER --- */}
-          {onBack && (
-            <button 
-                onClick={onBack}
-                className="absolute top-8 right-8 flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-sky-600 transition-colors group"
-            >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
-                Volver a tienda
-              </button>
-            )}
-          {/* ------------------------------------ */}
-           {/* ... (Botón volver, Inputs, etc.) ... */}
-           
-           {/* Solo asegúrate de copiar el contenido interior del formulario que te pasé antes aquí */}
-           
-           {/* COPIA AQUÍ EL CONTENIDO INTERNO DEL PANEL DERECHO DEL CÓDIGO ANTERIOR */}
-           {onBack && (
-            <button 
-              onClick={onBack}
-              className="absolute top-8 right-8 flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-sky-600 transition-colors group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
-              Volver a tienda
-            </button>
-          )}
-
-
-          <div className="max-w-md mx-auto w-full">
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold text-slate-800 mb-2">Bienvenido de nuevo</h2>
-              <p className="text-slate-500">Ingresa tus credenciales para acceder.</p>
-            </div>
-
-            {error && (
-              <div className="mb-6 bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 flex items-start gap-3 animate-shake">
-                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                <p className="text-sm font-medium">{error}</p>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Input Email */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">Email Corporativo</label>
+          <div className="mt-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                  Correo Electrónico
+                </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-sky-500 transition-colors" />
                   </div>
                   <input
-                    type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="nombre@empresa.com"
-                    className="block w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 focus:bg-white transition-all outline-none"
+                    type="email"
                     required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all bg-slate-50 focus:bg-white"
+                    placeholder="nombre@empresa.com"
                   />
                 </div>
               </div>
 
-              {/* Input Password */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700 ml-1">Contraseña</label>
+              {/* Contraseña */}
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                  Contraseña
+                </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-pink-500 transition-colors" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-sky-500 transition-colors" />
                   </div>
                   <input
-                    type={showPassword ? 'text' : 'password'}
                     name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="••••••••"
-                    className="block w-full pl-11 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 focus:bg-white transition-all outline-none"
+                    type={showPassword ? "text" : "password"}
                     required
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="block w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all bg-slate-50 focus:bg-white"
+                    placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors" />
+                    )}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-pink-500 focus:ring-pink-500 cursor-pointer" />
-                  <span className="text-slate-500 group-hover:text-slate-700 transition-colors">Recordarme</span>
-                </label>
-                <a href="#" className="font-semibold text-sky-600 hover:text-sky-700 hover:underline">
-                  ¿Olvidaste tu contraseña?
-                </a>
-              </div>
+              {/* Error */}
+              {error && (
+                <div className="rounded-xl bg-red-50 p-4 border border-red-100 flex gap-3 items-start animate-fade-in">
+                  <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                  <p className="text-sm text-red-700 font-medium">{error}</p>
+                </div>
+              )}
 
+              {/* Botón Submit */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+                className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-sky-500/30 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-[0.98]"
               >
                 {loading ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span>Autenticando...</span>
-                  </>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <>Iniciando Sesión</>
+                  'Iniciar Sesión'
                 )}
               </button>
             </form>
 
-            {/* SECCIÓN DEMO */}
-            <div className="mt-10 pt-8 border-t border-slate-100">
-              <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Acceso Rápido (Modo Demo)</p>
-              
-              <div className="grid grid-cols-3 gap-3">
+            {/* Accesos Rápidos (Demo) */}
+            <div className="mt-10">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-slate-400 font-bold uppercase text-xs tracking-wider">
+                    Accesos Rápidos (Demo)
+                  </span>
+                </div>
+              </div>
+
+              {/* GRID RESPONSIVO:
+                - Móvil (grid-cols-1): Botones horizontales (icono izq, texto der).
+                - Tablet/PC (sm:grid-cols-3): Botones verticales (icono arriba, texto abajo).
+              */}
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* Admin */}
                 <button
                   type="button"
-                  onClick={() => handleDemoLogin('admin@Electronica Andy.com', 'admin123')}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50 transition-all group"
+                  onClick={() => handleDemoLogin('andyg123@elec.com', 'admin123')}
+                  className="flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all group bg-white"
                 >
-                  <div className="p-2 bg-purple-100 text-purple-600 rounded-full group-hover:scale-110 transition-transform">
+                  <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:scale-110 transition-transform shadow-sm">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-600 group-hover:text-purple-700">Admin</span>
+                  <div className="text-left sm:text-center">
+                    <p className="text-xs font-bold text-slate-700 group-hover:text-indigo-700">Administrador</p>
+                    <p className="text-[10px] text-slate-400 sm:hidden">Acceso total</p>
+                  </div>
                 </button>
 
+                {/* Supervisor */}
                 <button
                   type="button"
-                  onClick={() => handleDemoLogin('supervisor@Electronica Andy.com', 'super123')}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50 transition-all group"
+                  onClick={() => handleDemoLogin('supervisor@elec.com', 'super123')}
+                  className="flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 transition-all group bg-white"
                 >
-                  <div className="p-2 bg-sky-100 text-sky-600 rounded-full group-hover:scale-110 transition-transform">
+                  <div className="p-2 bg-sky-100 text-sky-600 rounded-lg group-hover:scale-110 transition-transform shadow-sm">
                     <UserCog className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-600 group-hover:text-sky-700">Supervisor</span>
+                  <div className="text-left sm:text-center">
+                     <p className="text-xs font-bold text-slate-700 group-hover:text-sky-700">Supervisor</p>
+                     <p className="text-[10px] text-slate-400 sm:hidden">Gestión y reportes</p>
+                  </div>
                 </button>
 
+                {/* Vendedor */}
                 <button
                   type="button"
-                  onClick={() => handleDemoLogin('vendedor@Electronica Andy.com', 'vende123')}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-100 hover:border-pink-200 hover:bg-pink-50 transition-all group"
+                  onClick={() => handleDemoLogin('vendedor@elec.com', 'vende123')}
+                  className="flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50 transition-all group bg-white"
                 >
-                  <div className="p-2 bg-pink-100 text-pink-600 rounded-full group-hover:scale-110 transition-transform">
+                  <div className="p-2 bg-pink-100 text-pink-600 rounded-lg group-hover:scale-110 transition-transform shadow-sm">
                     <Store className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-600 group-hover:text-pink-700">Vendedor</span>
+                  <div className="text-left sm:text-center">
+                    <p className="text-xs font-bold text-slate-700 group-hover:text-pink-700">Vendedor</p>
+                    <p className="text-[10px] text-slate-400 sm:hidden">Ventas e inventario</p>
+                  </div>
                 </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
+      {/* === SECCIÓN DERECHA (Decorativa) === */}
+      {/* hidden en móvil, block en pantallas grandes (lg) */}
+      <div className="hidden lg:block relative w-0 flex-1 bg-slate-900 overflow-hidden">
+        <img
+          className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-overlay scale-105 hover:scale-110 transition-transform duration-[20s]"
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
+          alt="Electronic Background"
+        />
+        {/* Gradiente Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900/90 to-sky-900/40 mix-blend-multiply" />
+        
+        {/* Contenido Decorativo */}
+        <div className="absolute inset-0 flex flex-col justify-between p-20 z-10">
+          <div className="flex items-center gap-3">
+             <div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/20 shadow-lg">
+                <Package className="w-6 h-6 text-white" />
+             </div>
+             <span className="text-white font-bold text-xl tracking-wide drop-shadow-md">Electronica Andy</span>
+          </div>
+
+          <div className="max-w-md">
+            <h2 className="text-4xl font-black text-white mb-6 leading-tight drop-shadow-xl">
+              Gestiona tu negocio de electrónica al <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">máximo nivel</span>.
+            </h2>
+            <p className="text-slate-300 text-lg leading-relaxed mb-8 font-light">
+              Control total de inventario, punto de venta ágil y reportes en tiempo real. Todo lo que necesitas para crecer, en un solo lugar.
+            </p>
+            
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-md rounded-lg border border-white/10 shadow-sm hover:bg-white/10 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                <span className="text-sm text-slate-200 font-medium">Inventario Real</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-md rounded-lg border border-white/10 shadow-sm hover:bg-white/10 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-sky-400" />
+                <span className="text-sm text-slate-200 font-medium">Facturación Rápida</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-slate-500 font-medium border-t border-white/10 pt-6">
+            © 2024 Electronica Andy System. Versión 2.0
+          </div>
+        </div>
       </div>
     </div>
   );

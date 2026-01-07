@@ -32,7 +32,7 @@ function Sidebar({ activeView, setActiveView, usuario, onClose }) { // onClose e
             <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center text-white">
             E
             </div>
-            <span>ElecSales</span>
+            <span>Electronica Andy</span>
         </div>
         {/* Botón cerrar solo visible en móvil (opcional, ya que el overlay cierra) */}
         {onClose && (

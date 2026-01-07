@@ -59,7 +59,7 @@ function ECommerceMain({ onLogin }) {
   };
 
   const eliminarDelCarrito = (id) => setCarrito(carrito.filter(item => item.id !== id));
-  const calcularTotal = () => carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+  const calcularTotal = () => carrito.reduce((sum, item) => sum + (item.precioVent * item.cantidad), 0);
   const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
   const enviarAWhatsApp = () => {
