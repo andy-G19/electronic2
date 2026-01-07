@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Eye, Edit, Trash2, ChevronUp, ChevronDown, Package } from 'lucide-react';
+import { Eye, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 
 function ProductoTable({ productos, onView, onEdit, onDelete }) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-  // Ordenar productos
+  // Lógica de ordenamiento
   const sortedProductos = React.useMemo(() => {
     if (!sortConfig.key) return productos;
 
@@ -22,7 +22,6 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
     });
   }, [productos, sortConfig]);
 
-  // Cambiar ordenamiento
   const handleSort = (key) => {
     setSortConfig(prev => ({
       key,
@@ -30,7 +29,6 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
     }));
   };
 
-  // Renderizar icono de ordenamiento
   const renderSortIcon = (key) => {
     if (sortConfig.key !== key) return null;
     return sortConfig.direction === 'asc' 
@@ -53,10 +51,6 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
     return styles[estado] || 'bg-gray-100 text-gray-800';
   };
 
-  const calcularGanancia = (precioVenta, precioCompra) => {
-    return ((precioVenta - precioCompra) / precioCompra * 100).toFixed(1);
-  };
-
   if (productos.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
@@ -65,148 +59,118 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay productos</h3>
-        <p className="text-gray-600">Comienza agregando tu primer producto al inventario</p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No hay productos</h3>
+        <p className="text-gray-500">Agrega productos a tu inventario para verlos aquí.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col">
+      {/* Contenedor con scroll horizontal suave */}
+      <div className="overflow-x-auto w-full">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
-              <th 
-                onClick={() => handleSort('id')}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex items-center gap-2">
-                  ID / Producto
-                  {renderSortIcon('id')}
-                </div>
+              {/* Columna Producto: Padding reducido en móvil (px-4 vs px-6) */}
+              <th onClick={() => handleSort('nombre')} className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 min-w-[180px]">
+                <div className="flex items-center gap-2">Producto {renderSortIcon('nombre')}</div>
               </th>
-              <th 
-                onClick={() => handleSort('categoria')}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex items-center gap-2">
-                  Categoría
-                  {renderSortIcon('categoria')}
-                </div>
+              
+              {/* Categoría: Oculta en móvil (hidden md:table-cell) */}
+              <th onClick={() => handleSort('categoria')} className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                <div className="flex items-center gap-2">Categoría {renderSortIcon('categoria')}</div>
               </th>
-              <th 
-                onClick={() => handleSort('stock')}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex items-center gap-2">
-                  Stock
-                  {renderSortIcon('stock')}
-                </div>
+              
+              <th onClick={() => handleSort('stock')} className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                <div className="flex items-center gap-2">Stock {renderSortIcon('stock')}</div>
               </th>
-              <th 
-                onClick={() => handleSort('precio')}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex items-center gap-2">
-                  Precio
-                  {renderSortIcon('precio')}
-                </div>
+              
+              <th onClick={() => handleSort('precioVenta')} className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                <div className="flex items-center gap-2">Precio {renderSortIcon('precioVenta')}</div>
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Ganancia
+              
+              {/* Estado: Oculto en tablets pequeñas y móvil (hidden lg:table-cell) */}
+              <th className="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                Estado
               </th>
-              <th 
-                onClick={() => handleSort('estado')}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex items-center gap-2">
-                  Estado
-                  {renderSortIcon('estado')}
-                </div>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              
+              <th className="px-4 md:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap sticky right-0 bg-gray-50">
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-200">
             {sortedProductos.map((producto) => (
               <tr key={producto.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    {/* Thumbnail de imagen */}
-                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                
+                {/* Producto + Imagen */}
+                <td className="px-4 md:px-6 py-4">
+                  <div className="flex items-center">
+                    <div className="h-10 w-10 flex-shrink-0">
                       {producto.imagen ? (
-                        <img
-                          src={producto.imagen}
-                          alt={producto.nombre}
-                          className="w-full h-full object-cover"
-                        />
+                        <img className="h-10 w-10 rounded-lg object-cover" src={producto.imagen} alt="" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Package className="w-6 h-6 text-gray-400" />
+                        <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                          <span className="text-gray-400 text-[10px]">N/A</span>
                         </div>
                       )}
                     </div>
-
-                    {/* Información del producto */}  
-                    <div>
-                      <p className="font-medium text-gray-900">{producto.nombre}</p>
-                      <p className="text-sm text-gray-500">
-                        {producto.id} • {producto.proveedor}
-                      </p>
+                    <div className="ml-3 md:ml-4">
+                      <div className="text-sm font-medium text-gray-900 line-clamp-2 max-w-[150px] md:max-w-none">
+                        {producto.nombre}
+                      </div>
+                      {/* Mostrar categoría aquí solo en móvil */}
+                      <div className="md:hidden text-xs text-gray-500 mt-0.5">
+                        {producto.categoria}
+                      </div>
                     </div>
                   </div>
                 </td>
 
-                <td className="px-6 py-4">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {producto.categoria}
+                {/* Categoría (Desktop) */}
+                <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {producto.categoria}
+                </td>
+
+                {/* Stock */}
+                <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                  <span className={`text-sm ${getStockColor(producto.stock, producto.stockMinimo)}`}>
+                    {producto.stock} u.
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <div>
-                    <span className={getStockColor(producto.stock, producto.stockMinimo)}>
-                      {producto.stock}
-                    </span>
-                    <span className="text-xs text-gray-500 ml-1">/ {producto.stockMinimo} mín</span>
-                  </div>
+
+                {/* Precio */}
+                <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">S/ {parseFloat(producto.precioVenta).toFixed(2)}</div>
                 </td>
-                <td className="px-6 py-4">
-                  <div>
-                    <p className="text-gray-900 font-medium">S/ {producto.precio.toFixed(2)}</p>
-                    <p className="text-xs text-gray-500">Costo: S/ {producto.precioCompra.toFixed(2)}</p>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <span className="text-green-600 font-medium">
-                    +{calcularGanancia(producto.precio, producto.precioCompra)}%
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getEstadoBadge(producto.estado)}`}>
+
+                {/* Estado (Desktop Grande) */}
+                <td className="hidden lg:table-cell px-6 py-4 whitespace-nowrap">
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getEstadoBadge(producto.estado)}`}>
                     {producto.estado}
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => onView(producto)}
+
+                {/* Acciones */}
+                <td className="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-white/95 backdrop-blur-sm border-l border-gray-100 shadow-sm md:shadow-none md:border-none md:bg-transparent">
+                  <div className="flex items-center justify-end gap-1 md:gap-2">
+                    <button 
+                      onClick={() => onView(producto)} 
                       className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Ver detalles"
+                      title="Ver detalle"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button
-                      onClick={() => onEdit(producto)}
-                      className="p-1.5 text-sky-400 hover:bg-sky-50 rounded-lg transition-colors"
+                    <button 
+                      onClick={() => onEdit(producto)} 
+                      className="p-1.5 text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
                       title="Editar"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
-                    <button
-                      onClick={() => onDelete(producto.id)}
+                    <button 
+                      onClick={() => onDelete(producto.id)} 
                       className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Eliminar"
                     >
@@ -220,8 +184,7 @@ function ProductoTable({ productos, onView, onEdit, onDelete }) {
         </table>
       </div>
       
-      {/* Footer con total de productos */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 mt-auto">
         <p className="text-sm text-gray-600">
           Mostrando <span className="font-medium text-gray-900">{productos.length}</span> productos
         </p>

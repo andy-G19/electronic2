@@ -1,16 +1,17 @@
 import React from 'react';
-import { Plus, Package } from 'lucide-react';
+import { Plus, Package } from 'lucide-react'; // Mantenemos tus importaciones
 
 function ProductoSelector({ productos, onSelectProducto, busqueda }) {
-  if (productos.length === 0) {
+  // Validación de seguridad por si productos es null/undefined
+  if (!productos || productos.length === 0) {
     return (
       <div className="flex items-center justify-center h-full min-h-[300px]">
         <div className="text-center">
-          <Package className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+          <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
             {busqueda ? 'No se encontraron productos' : 'No hay productos disponibles'}
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-gray-600">
             {busqueda 
               ? 'Intenta con otro término de búsqueda'
               : 'Agrega productos al inventario para comenzar a vender'}
@@ -21,7 +22,9 @@ function ProductoSelector({ productos, onSelectProducto, busqueda }) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+    // GRID RESPONSIVO CORREGIDO:
+    // Se adapta: 2 columnas en celular -> 3 en tablet -> 4/5 en PC
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 p-2 overflow-y-auto h-full content-start">
       {productos.map((producto) => (
         <ProductoCard
           key={producto.id}
@@ -34,59 +37,74 @@ function ProductoSelector({ productos, onSelectProducto, busqueda }) {
 }
 
 function ProductoCard({ producto, onSelect }) {
-  const stockBajo = producto.stock < 5;
+  // 1. Manejo seguro de Stock
+  const stock = producto.stock || 0;
+  
+  // 2. LÓGICA BLINDADA PARA EL PRECIO
+  const obtenerPrecioFormateado = () => {
+    // Busca el precio en cualquiera de las dos propiedades comunes
+    let valor = producto.precioVenta !== undefined ? producto.precioVenta : producto.precio;
+
+    // Si no hay nada, devuelve 0.00
+    if (valor === undefined || valor === null || valor === '') return '0.00';
+
+    // Si ya es un número puro, solo ponle decimales
+    if (typeof valor === 'number') return valor.toFixed(2);
+
+    // Si es texto (ej: "S/ 25.50"), límpialo dejando solo números y puntos
+    const valorLimpio = valor.toString().replace(/[^0-9.]/g, ''); 
+    const numero = parseFloat(valorLimpio);
+
+    // Si falló la conversión (es NaN), devuelve 0.00, si no, devuelve el número formateado
+    return isNaN(numero) ? '0.00' : numero.toFixed(2);
+  };
+
+  const precioFinal = obtenerPrecioFormateado();
 
   return (
     <button
       onClick={() => onSelect(producto)}
-      className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 hover:shadow-lg hover:border-sky-200 transition-all text-left group relative"
+      className="bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-sky-400 hover:ring-1 hover:ring-sky-400 transition-all text-left group relative flex flex-col h-full"
     >
-      {stockBajo && (
-        <div className="absolute top-2 right-2 bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full z-10">
-          Stock bajo
-        </div>
-      )}
+      {/* Badge de Stock */}
+      <div className={`absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[10px] font-bold z-10 shadow-sm ${
+        stock === 0 ? 'bg-red-100 text-red-700' :
+        stock < 5 ? 'bg-orange-100 text-orange-700' :
+        'bg-green-100 text-green-700'
+      }`}>
+        {stock} u.
+      </div>
 
-      <div className="w-full h-28 sm:h-32 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+      {/* Imagen */}
+      <div className="aspect-square rounded-lg bg-gray-50 mb-3 overflow-hidden flex items-center justify-center relative border border-gray-100">
         {producto.imagen ? (
-          <img
-            src={producto.imagen}
-            alt={producto.nombre}
-            className="w-full h-full object-cover"
+          <img 
+            src={producto.imagen} 
+            alt={producto.nombre} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            // Si la imagen falla al cargar, muestra el icono
+            onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.classList.add('flex', 'items-center', 'justify-center'); }} 
           />
         ) : (
-          <Package className="w-10 h-10 sm:w-12 sm:h-12 text-indigo-400" />
+          <Package className="w-8 h-8 text-gray-300" />
         )}
       </div>
 
-      <div className="space-y-2">
-        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 min-h-[2.5rem] group-hover:text-sky-400 transition-colors">
-          {producto.nombre}
-        </h3>
-        
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <p className="text-xs text-gray-500 truncate">{producto.id}</p>
-            <p className="text-base sm:text-lg font-bold text-sky-400 mt-1">S/ {producto.precio.toFixed(2)}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-gray-500">Stock</p>
-            <p className={`text-sm font-semibold ${
-              producto.stock === 0 ? 'text-red-600' :
-              producto.stock < 5 ? 'text-orange-600' :
-              'text-green-600'
-            }`}>
-              {producto.stock}
-            </p>
-          </div>
-        </div>
-
-        <div className="pt-2 border-t border-gray-200 mt-2">
-          <div className="flex items-center justify-center gap-2 text-sky-400 font-medium text-xs sm:text-sm group-hover:text-sky-500">
-            <Plus className="w-4 h-4" />
-            <span>Agregar</span>
-          </div>
-        </div>
+      {/* Info */}
+      <div className="flex-1 min-h-[3rem]">
+        <h4 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-tight mb-1" title={producto.nombre}>
+          {producto.nombre || 'Sin nombre'}
+        </h4>
+        <p className="text-xs text-gray-500 mb-2 truncate">
+            {producto.categoria || 'General'}
+        </p>
+      </div>
+      
+      {/* Precio Seguro */}
+      <div className="mt-auto pt-2 border-t border-gray-50 flex items-center justify-between">
+        <span className="font-bold text-sky-600 text-base">
+          S/ {precioFinal}
+        </span>
       </div>
     </button>
   );

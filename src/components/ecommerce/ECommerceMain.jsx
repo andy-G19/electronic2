@@ -3,7 +3,7 @@ import {
   ShoppingCart, Search, X, MessageCircle, 
   Plus, Minus, Trash2, LogIn, 
   Zap, Star, Filter, ArrowRight,
-  Facebook, Instagram, Twitter, MapPin, Mail, Phone
+  Facebook, Instagram, Twitter, MapPin, Mail, Phone, Menu, User
 } from 'lucide-react';
 
 // Importar datos desde tu contexto
@@ -86,40 +86,63 @@ function ECommerceMain({ onLogin }) {
       {/* WRAPPER PRINCIPAL */}
       <div className="relative z-10 flex flex-col min-h-screen">
         
-        {/* === HEADER === */}
+        {/* === HEADER RESPONSIVO === */}
         <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-slate-900/40 border-b border-white/10 shadow-lg transition-all duration-300 text-white">
-          <div className="bg-gradient-to-r from-sky-600/90 to-pink-600/90 text-white py-1.5 px-4 text-xs font-medium text-center tracking-wide backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-sky-600/90 to-pink-600/90 text-white py-1.5 px-4 text-[10px] sm:text-xs font-medium text-center tracking-wide backdrop-blur-sm">
             🚀 Envíos gratis por compras mayores a S/ 200.00
           </div>
+          
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-20 gap-8">
-              {/* Logo */}
-              <div className="flex items-center gap-3 shrink-0 cursor-pointer group">
-                <div className="relative w-10 h-10 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-pink-500/30 transition-all duration-300 group-hover:scale-105">
-                  <ShoppingCart className="w-5 h-5 text-white" />
+            {/* Contenedor Flex que cambia dirección en móvil */}
+            <div className="flex flex-col md:flex-row justify-between items-center py-4 md:h-24 gap-4 md:gap-8">
+              
+              {/* Fila Superior Móvil: Logo + Botones Acción */}
+              <div className="flex justify-between items-center w-full md:w-auto">
+                {/* Logo */}
+                <div className="flex items-center gap-3 shrink-0 cursor-pointer group">
+                  <div className="relative w-10 h-10 bg-gradient-to-tr from-sky-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-pink-500/30 transition-all duration-300 group-hover:scale-105">
+                    <ShoppingCart className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
+                      Electronica Andy
+                    </h1>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <h1 className="text-2xl font-black bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
-                    Electronica Andy
-                  </h1>
+
+                {/* Botones Móvil (Carrito) */}
+                <div className="flex md:hidden items-center gap-3">
+                    <button onClick={onLogin} className="p-2 text-slate-300 hover:text-white">
+                        <User className="w-5 h-5" />
+                    </button>
+                    <button onClick={() => setMostrarCarrito(true)} className="relative p-2 bg-white/10 rounded-full">
+                        <ShoppingCart className="w-5 h-5 text-white" />
+                        {totalItems > 0 && (
+                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce">
+                            {totalItems}
+                        </span>
+                        )}
+                    </button>
                 </div>
               </div>
-              {/* Buscador */}
-              <div className="hidden md:flex flex-1 max-w-xl relative group">
+
+              {/* Buscador (Ancho completo en móvil, flexible en PC) */}
+              <div className="w-full md:flex-1 md:max-w-xl relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Search className="h-5 w-5 text-slate-300 group-focus-within:text-pink-400 transition-colors" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-full text-sm text-white placeholder-slate-300 focus:ring-2 focus:ring-pink-500/50 focus:bg-white/20 transition-all shadow-inner backdrop-blur-md"
-                  placeholder="¿Qué componentes buscas hoy?"
+                  className="block w-full pl-11 pr-4 py-2.5 sm:py-3 bg-white/10 border border-white/20 rounded-full text-sm text-white placeholder-slate-300 focus:ring-2 focus:ring-pink-500/50 focus:bg-white/20 transition-all shadow-inner backdrop-blur-md outline-none"
+                  placeholder="Buscar componentes..."
                   value={busqueda}
                   onChange={(e) => setBusqueda(e.target.value)}
                 />
               </div>
-              {/* Botones */}
-              <div className="flex items-center gap-4">
-                <button onClick={onLogin} className="hidden lg:flex items-center gap-2 text-sm font-semibold text-slate-200 hover:text-white transition-colors bg-white/10 px-4 py-2 rounded-full hover:bg-white/20">
+
+              {/* Botones Desktop (Ocultos en móvil) */}
+              <div className="hidden md:flex items-center gap-4">
+                <button onClick={onLogin} className="flex items-center gap-2 text-sm font-semibold text-slate-200 hover:text-white transition-colors bg-white/10 px-4 py-2 rounded-full hover:bg-white/20">
                   <LogIn className="w-4 h-4" /> Staff
                 </button>
                 <button onClick={() => setMostrarCarrito(true)} className="relative p-3 bg-white/10 hover:bg-white/20 rounded-full border border-white/10 transition-all hover:shadow-md group">
@@ -133,14 +156,15 @@ function ECommerceMain({ onLogin }) {
               </div>
             </div>
           </div>
-          {/* Categorías */}
+
+          {/* Categorías con Scroll Horizontal (Instagram Style) */}
           <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar mask-fade-sides">
+            <div className="max-w-7xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar mask-fade-sides pb-2">
               {categorias.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setCategoriaFiltro(cat)}
-                  className={`whitespace-nowrap px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                  className={`whitespace-nowrap px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                     categoriaFiltro === cat
                       ? 'bg-white text-slate-900 shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105'
                       : 'bg-white/10 text-slate-200 hover:bg-white/20 hover:text-white'
@@ -153,17 +177,17 @@ function ECommerceMain({ onLogin }) {
           </div>
         </header>
 
-        {/* === HERO SECTION === */}
+        {/* === HERO SECTION RESPONSIVO === */}
         {!busqueda && categoriaFiltro === 'Todos' && (
           <div className="relative overflow-hidden mb-8 border-b border-white/10 bg-slate-900/30 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-6 py-16 sm:py-24 relative z-10 text-center sm:text-left">
-              <h2 className="text-4xl sm:text-6xl font-black mb-4 tracking-tight text-white drop-shadow-xl">
+            <div className="max-w-7xl mx-auto px-6 py-12 sm:py-24 relative z-10 text-center sm:text-left">
+              <h2 className="text-3xl sm:text-6xl font-black mb-4 tracking-tight text-white drop-shadow-xl leading-tight">
                 Tecnología <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-pink-300">
                   Al Siguiente Nivel
                 </span>
               </h2>
-              <p className="text-lg text-slate-200 mb-8 max-w-2xl drop-shadow-md">
+              <p className="text-sm sm:text-lg text-slate-200 mb-8 max-w-2xl drop-shadow-md mx-auto sm:mx-0">
                 Encuentra los componentes electrónicos, arduinos y gadgets que necesitas para tus proyectos. Calidad garantizada.
               </p>
               <button className="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
@@ -175,7 +199,7 @@ function ECommerceMain({ onLogin }) {
 
         {/* === CONTENIDO PRINCIPAL === */}
         <main className="max-w-7xl mx-auto px-4 pb-20 pt-6 flex-1 w-full">
-          <div className="flex justify-between items-end mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
             <div>
               <h3 className="text-2xl font-bold text-white flex items-center gap-2 drop-shadow-md">
                 {categoriaFiltro === 'Todos' ? 'Destacados' : categoriaFiltro}
@@ -185,12 +209,12 @@ function ECommerceMain({ onLogin }) {
               </h3>
             </div>
             
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-2 rounded-lg border border-white/10 shadow-sm">
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-2 rounded-lg border border-white/10 shadow-sm w-full sm:w-auto">
               <Filter className="w-4 h-4 text-slate-300" />
               <select 
                 value={ordenar}
                 onChange={(e) => setOrdenar(e.target.value)}
-                className="bg-transparent border-none text-sm font-medium text-white focus:ring-0 cursor-pointer outline-none [&>option]:text-slate-900"
+                className="bg-transparent border-none text-sm font-medium text-white focus:ring-0 cursor-pointer outline-none w-full [&>option]:text-slate-900"
               >
                 <option value="destacado">Destacados</option>
                 <option value="precio-asc">Menor Precio</option>
@@ -201,7 +225,8 @@ function ECommerceMain({ onLogin }) {
           </div>
 
           {productosFiltrados.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            // Grid Responsivo: 1 col (móvil) -> 2 cols (tablet) -> 3 cols (desktop) -> 4 cols (XL)
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               {productosFiltrados.map(producto => (
                 <ProductoCard key={producto.id} producto={producto} onAgregar={agregarAlCarrito} />
               ))}
@@ -217,7 +242,7 @@ function ECommerceMain({ onLogin }) {
           )}
         </main>
 
-        {/* === FOOTER (NUEVO) === */}
+        {/* === FOOTER === */}
         <footer className="mt-auto bg-black/40 backdrop-blur-xl border-t border-white/10 pt-16 pb-8 text-sm text-slate-300">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             
@@ -295,13 +320,14 @@ function ECommerceMain({ onLogin }) {
           </div>
         </footer>
 
-        {/* === DRAWER DEL CARRITO === */}
+        {/* === DRAWER DEL CARRITO (W-FULL en móvil) === */}
         {mostrarCarrito && (
           <div className="fixed inset-0 z-50 flex justify-end">
             <div 
               className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
               onClick={() => setMostrarCarrito(false)}
             />
+            {/* max-w-md limita en escritorio, w-full llena en móvil */}
             <div className="relative w-full max-w-md bg-white/95 backdrop-blur-xl h-full shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-in-right border-l border-white/20">
               <div className="p-6 border-b border-slate-100 flex items-center justify-between z-10">
                 <div className="flex items-center gap-3">
@@ -364,7 +390,7 @@ function ECommerceMain({ onLogin }) {
           </div>
         )}
 
-        {/* FAB WHATSAPP */}
+        {/* FAB WHATSAPP (Solo aparece si el carrito está cerrado y tiene items) */}
         {!mostrarCarrito && carrito.length > 0 && (
           <button onClick={() => setMostrarCarrito(true)} className="fixed bottom-8 right-8 bg-white text-slate-900 p-4 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform z-40 flex items-center gap-2 group animate-bounce-slow">
             <ShoppingCart className="w-6 h-6 text-pink-500" />
@@ -376,18 +402,23 @@ function ECommerceMain({ onLogin }) {
   );
 }
 
-// TARJETA DE PRODUCTO (Sin cambios funcionales, solo visuales para fondo oscuro)
+// TARJETA DE PRODUCTO
 function ProductoCard({ producto, onAgregar }) {
   const [agregado, setAgregado] = useState(false);
   const handleAgregar = () => { onAgregar(producto); setAgregado(true); setTimeout(() => setAgregado(false), 1500); };
-  const isStockLow = producto.stock > 0 && producto.stock < 5;
-  const isOutOfStock = producto.stock === 0;
+  const stock = producto.stock || 0;
+  const isStockLow = stock > 0 && stock < 5;
+  const isOutOfStock = stock === 0;
+
+  // Lógica segura de precios
+  const precio = parseFloat(producto.precioVenta || producto.precio || 0);
+  const precioDisplay = isNaN(precio) ? '0.00' : precio.toFixed(2);
 
   return (
     <div className="group bg-white/90 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl hover:shadow-2xl hover:bg-white hover:-translate-y-2 transition-all duration-300 flex flex-col overflow-hidden relative">
       {isStockLow && (
         <div className="absolute top-3 left-3 bg-amber-100/90 text-amber-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider z-20 flex items-center gap-1 border border-amber-200">
-          <Zap className="w-3 h-3 fill-amber-500 text-amber-500" /> ¡Quedan {producto.stock}!
+          <Zap className="w-3 h-3 fill-amber-500 text-amber-500" /> ¡Quedan {stock}!
         </div>
       )}
       <div className="relative aspect-square overflow-hidden bg-white p-6 rounded-t-xl">
@@ -397,11 +428,11 @@ function ProductoCard({ producto, onAgregar }) {
       <div className="p-5 flex-1 flex flex-col">
         <div className="mb-auto">
           <p className="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">{producto.categoria}</p>
-          <h3 className="font-bold text-slate-800 text-lg leading-snug mb-2 group-hover:text-sky-600 transition-colors">{producto.nombre}</h3>
+          <h3 className="font-bold text-slate-800 text-lg leading-snug mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">{producto.nombre}</h3>
           <div className="flex gap-0.5 mb-3">{[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />)}</div>
         </div>
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200/60">
-          <div className="flex flex-col"><span className="text-xs text-slate-500 font-medium">Precio</span><span className="text-xl font-black text-slate-900">S/ {producto.precio.toFixed(2)}</span></div>
+          <div className="flex flex-col"><span className="text-xs text-slate-500 font-medium">Precio</span><span className="text-xl font-black text-slate-900">S/ {precioDisplay}</span></div>
           <button onClick={handleAgregar} disabled={isOutOfStock} className={`px-4 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ${isOutOfStock ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : agregado ? 'bg-green-500 text-white shadow-green-500/30 shadow-lg' : 'bg-slate-900 text-white hover:bg-sky-600 shadow-lg hover:shadow-sky-500/30'}`}>
             {agregado ? <>Agregado <ArrowRight className="w-4 h-4" /></> : <><ShoppingCart className="w-4 h-4" /> Comprar</>}
           </button>

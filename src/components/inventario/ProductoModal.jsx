@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Edit, Trash2, Package, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
+import { X, Edit, Trash2, Package, TrendingUp } from 'lucide-react';
 
 function ProductoModal({ producto, onClose, onEdit, onDelete }) {
   const getEstadoColor = (estado) => {
@@ -15,197 +15,114 @@ function ProductoModal({ producto, onClose, onEdit, onDelete }) {
     }
   };
 
-  const calcularGanancia = () => {
-    return ((producto.precio - producto.precioCompra) / producto.precioCompra * 100).toFixed(1);
-  };
-
   const calcularGananciaTotal = () => {
-    return ((producto.precio - producto.precioCompra) * producto.stock).toFixed(2);
+    return ((producto.precioVenta - producto.precioCompra) * producto.stock).toFixed(2);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        
+        {/* Header con Imagen de fondo si existe, o color sólido */}
+        <div className="relative h-48 bg-gray-100">
+          {producto.imagen ? (
+            <img 
+              src={producto.imagen} 
+              alt={producto.nombre} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-300">
+               <Package className="w-16 h-16" />
+            </div>
+          )}
+          
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white text-gray-900 rounded-full shadow-lg backdrop-blur-sm transition-all"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
-            {/* Imagen del producto */}
-              <div className="relative h-64 bg-gray-100 rounded-lg overflow-hidden mb-6">
-                {producto.imagen ? (
-                  <img
-                    src={producto.imagen}
-                    alt={producto.nombre}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center">
-                    <Package className="w-24 h-24 text-gray-400 mb-3" />
-                    <p className="text-sm text-gray-500">Sin imagen disponible</p>
-                  </div>
-                )}
-              </div>
-            
-            
-
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">{producto.nombre}</h3>
-              <p className="text-sm text-gray-500">{producto.id}</p>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+            <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-md">{producto.nombre}</h2>
+            <div className="flex items-center gap-2">
+              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${getEstadoColor(producto.estado)} bg-opacity-90`}>
+                {producto.estado}
+              </span>
+              <span className="text-white/90 text-sm font-medium px-2 py-0.5 bg-black/30 rounded-full backdrop-blur-md">
+                {producto.categoria}
+              </span>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6">
+        {/* Contenido */}
+        <div className="p-6">
+          {/* Layout Responsive: Columna en móvil, Row en Desktop */}
+          <div className="flex flex-col md:flex-row gap-6">
+            
+            {/* Columna Principal Info */}
+            <div className="flex-1 space-y-6">
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-sm text-gray-500 mb-1">Precio Venta</p>
+                  <p className="text-xl font-bold text-gray-900">S/ {parseFloat(producto.precioVenta).toFixed(2)}</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-sm text-gray-500 mb-1">Stock Actual</p>
+                  <p className={`text-xl font-bold ${producto.stock < producto.stockMinimo ? 'text-red-600' : 'text-gray-900'}`}>
+                    {producto.stock} u.
+                  </p>
+                </div>
+              </div>
 
-          {/* Estado */}
-          <div className="flex items-center justify-between">
-            <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium border ${getEstadoColor(producto.estado)}`}>
-              {producto.estado}
-            </span>
-            <div className="flex gap-2">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-gray-400" />
+                  Análisis de Rentabilidad
+                </h4>
+                <div className="bg-green-50 rounded-xl p-4 border border-green-100 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Costo Unitario:</span>
+                    <span className="font-medium">S/ {parseFloat(producto.precioCompra).toFixed(2)}</span>
+                  </div>
+                   <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Margen Unidad:</span>
+                    <span className="font-medium text-green-700">
+                      S/ {(producto.precioVenta - producto.precioCompra).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="pt-2 mt-2 border-t border-green-200 flex justify-between items-center">
+                    <span className="font-semibold text-green-800">Ganancia Potencial Total:</span>
+                    <span className="text-lg font-bold text-green-700">S/ {calcularGananciaTotal()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Columna Acciones */}
+            <div className="w-full md:w-48 flex flex-col gap-3">
               <button
                 onClick={onEdit}
-                className="flex items-center gap-2 px-4 py-2 text-sky-400 border border-sky-200 rounded-lg hover:bg-sky-50 transition-colors"
+                className="w-full py-2.5 px-4 bg-sky-50 text-sky-700 hover:bg-sky-100 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <Edit className="w-4 h-4" />
                 Editar
               </button>
               <button
                 onClick={onDelete}
-                className="flex items-center gap-2 px-4 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors"
+                className="w-full py-2.5 px-4 bg-white border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <Trash2 className="w-4 h-4" />
                 Eliminar
               </button>
             </div>
           </div>
-          
-
-          {/* Información General */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5" />
-              Información General
-            </h4>
-            <div className="grid grid-cols-2 gap-4 bg-gray-50 rounded-lg p-4">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Categoría</p>
-                <p className="font-medium text-gray-900">{producto.categoria}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Proveedor</p>
-                <p className="font-medium text-gray-900">{producto.proveedor}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-sm text-gray-600 mb-1">Descripción</p>
-                <p className="text-gray-900">{producto.descripcion || 'Sin descripción'}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Stock */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" />
-              Control de Stock
-            </h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-1">Stock Actual</p>
-                <p className={`text-3xl font-bold ${
-                  producto.stock === 0 ? 'text-red-600' :
-                  producto.stock < producto.stockMinimo ? 'text-orange-600' :
-                  'text-green-600'
-                }`}>
-                  {producto.stock}
-                </p>
-              </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-1">Stock Mínimo</p>
-                <p className="text-3xl font-bold text-gray-900">{producto.stockMinimo}</p>
-              </div>
-            </div>
-            {producto.stock < producto.stockMinimo && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 flex items-start gap-2">
-                <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-medium text-orange-900">Stock por debajo del mínimo</p>
-                  <p className="text-sm text-orange-700">
-                    Se recomienda reabastecer. Faltan {producto.stockMinimo - producto.stock} unidades para alcanzar el stock mínimo.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Precios y Ganancias */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-              <DollarSign className="w-5 h-5" />
-              Precios y Ganancias
-            </h4>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-1">Precio Compra</p>
-                <p className="text-2xl font-bold text-gray-900">S/ {producto.precioCompra.toFixed(2)}</p>
-              </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-1">Precio Venta</p>
-                <p className="text-2xl font-bold text-sky-400">S/ {producto.precio.toFixed(2)}</p>
-              </div>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <p className="text-sm text-green-700 mb-1">Margen</p>
-                <p className="text-2xl font-bold text-green-600">+{calcularGanancia()}%</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Análisis Financiero */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
-              Análisis Financiero
-            </h4>
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-4 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Ganancia por unidad:</span>
-                <span className="font-semibold text-gray-900">
-                  S/ {(producto.precio - producto.precioCompra).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Inversión total en stock:</span>
-                <span className="font-semibold text-gray-900">
-                  S/ {(producto.precioCompra * producto.stock).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Valor total en venta:</span>
-                <span className="font-semibold text-gray-900">
-                  S/ {(producto.precio * producto.stock).toFixed(2)}
-                </span>
-              </div>
-              <div className="pt-3 border-t border-indigo-200 flex justify-between items-center">
-                <span className="text-lg font-medium text-gray-900">Ganancia potencial total:</span>
-                <span className="text-2xl font-bold text-green-600">
-                  S/ {calcularGananciaTotal()}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-    
-  
   );
 }
 

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Package, Plus, Download, Filter } from 'lucide-react';
-import { useProductos } from '../../context/ProductosContext'; // IMPORTAR
+import { Package, Plus, Filter, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react';
+import { useProductos } from '../../context/ProductosContext';
 import ProductoTable from './ProductoTable';
 import ProductoForm from './ProductoForm';
 import ProductoFilters from './ProductoFilters';
 import ProductoModal from './ProductoModal';
 
 function InventarioMain() {
-  // USAR EL HOOK DEL CONTEXT
   const { 
     productos, 
     agregarProducto, 
@@ -16,153 +15,130 @@ function InventarioMain() {
     obtenerEstadisticas 
   } = useProductos();
 
-  // Estados UI
   const [showForm, setShowForm] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedProducto, setSelectedProducto] = useState(null);
   const [editingProducto, setEditingProducto] = useState(null);
 
-  // Estados de filtros
   const [filters, setFilters] = useState({
     search: '',
     categoria: '',
     proveedor: '',
-    estado: ''
+    estado: '',
   });
 
-  // Agregar producto
+  const stats = obtenerEstadisticas();
+
+  // Obtener listas únicas para filtros
+  const categorias = [...new Set(productos.map(p => p.categoria))];
+  const proveedores = [...new Set(productos.map(p => p.proveedor))];
+
+  const filteredProductos = productos.filter(producto => {
+    const matchesSearch = producto.nombre.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         producto.codigo?.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesCategoria = !filters.categoria || producto.categoria === filters.categoria;
+    const matchesProveedor = !filters.proveedor || producto.proveedor === filters.proveedor;
+    const matchesEstado = !filters.estado || producto.estado === filters.estado;
+
+    return matchesSearch && matchesCategoria && matchesProveedor && matchesEstado;
+  });
+
   const handleAddProducto = (newProducto) => {
     agregarProducto(newProducto);
     setShowForm(false);
   };
 
-  // Editar producto
   const handleEditProducto = (updatedProducto) => {
     actualizarProducto(updatedProducto.id, updatedProducto);
     setEditingProducto(null);
     setShowForm(false);
   };
 
-  // Eliminar producto
   const handleDeleteProducto = (id) => {
     if (window.confirm('¿Estás seguro de eliminar este producto?')) {
       eliminarProducto(id);
-      setSelectedProducto(null);
+      setSelectedProducto(null); // Cerrar modal si estaba abierto
     }
   };
 
-  // Abrir formulario para editar
   const handleOpenEdit = (producto) => {
     setEditingProducto(producto);
     setShowForm(true);
   };
 
-  // Filtrar productos
-  const filteredProductos = productos.filter(producto => {
-    const matchSearch = producto.nombre.toLowerCase().includes(filters.search.toLowerCase()) ||
-                       producto.id.toLowerCase().includes(filters.search.toLowerCase());
-    const matchCategoria = !filters.categoria || producto.categoria === filters.categoria;
-    const matchProveedor = !filters.proveedor || producto.proveedor === filters.proveedor;
-    const matchEstado = !filters.estado || producto.estado === filters.estado;
-    
-    return matchSearch && matchCategoria && matchProveedor && matchEstado;
-  });
-
-  // Obtener categorías únicas
-  const categorias = [...new Set(productos.map(p => p.categoria))];
-  const proveedores = [...new Set(productos.map(p => p.proveedor))];
-
-  // Estadísticas
-  const stats = obtenerEstadisticas();
-
-  // Exportar a CSV
-  const handleExportCSV = () => {
-    const headers = ['ID', 'Nombre', 'Categoría', 'Proveedor', 'Stock', 'Stock Mínimo', 'Precio Compra', 'Precio Venta', 'Estado'];
-    const rows = filteredProductos.map(p => [
-      p.id,
-      p.nombre,
-      p.categoria,
-      p.proveedor,
-      p.stock,
-      p.stockMinimo,
-      p.precioCompra,
-      p.precio,
-      p.estado
-    ]);
-    
-    const csvContent = [headers, ...rows]
-      .map(row => row.join(','))
-      .join('\n');
-    
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `inventario_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-  };
-
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+      {/* Header y Acciones */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Gestión de Inventario</h2>
-          <p className="text-gray-500 mt-1">Administra tu catálogo de productos</p>
+          <h2 className="text-2xl font-bold text-gray-900">Inventario</h2>
+          <p className="text-gray-500">Gestiona tu catálogo de productos</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex w-full sm:w-auto gap-2">
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className={`flex-1 sm:flex-none px-4 py-2 border rounded-xl flex items-center justify-center gap-2 transition-colors ${
+              showFilters ? 'bg-sky-50 border-sky-200 text-sky-700' : 'bg-white border-gray-200 hover:bg-gray-50'
+            }`}
           >
             <Filter className="w-4 h-4" />
             <span className="hidden sm:inline">Filtros</span>
-          </button>
-          <button 
-            onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">Exportar</span>
           </button>
           <button 
             onClick={() => {
               setEditingProducto(null);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-white rounded-lg hover:bg-sky-400 transition-colors"
+            className="flex-1 sm:flex-none px-4 py-2 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
           >
             <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">Nuevo Producto</span>
+            <span>Nuevo Producto</span>
           </button>
         </div>
       </div>
 
-      {/* Estadísticas */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">Total Productos</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+      {/* Cards de Estadísticas Responsivas */}
+      {/* CAMBIO: grid-cols-1 (móvil) -> sm:grid-cols-2 -> lg:grid-cols-4 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <Package className="w-5 h-5 text-blue-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-500">Total Productos</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{stats.totalProductos}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">En Stock</p>
-          <p className="text-2xl font-bold text-green-600">{stats.enStock}</p>
+
+        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-orange-50 rounded-lg">
+              <AlertTriangle className="w-5 h-5 text-orange-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-500">Stock Bajo</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{stats.stockBajo}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">Stock Bajo</p>
-          <p className="text-2xl font-bold text-orange-600">{stats.stockBajo}</p>
+
+        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-green-50 rounded-lg">
+              <DollarSign className="w-5 h-5 text-green-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-500">Valor Inventario</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">S/ {stats.valorTotal.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">Agotados</p>
-          <p className="text-2xl font-bold text-red-600">{stats.agotados}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">Con Imagen</p>
-          <p className="text-2xl font-bold text-sky-400">{stats.conImagen}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-600 mb-1">Valor Total</p>
-          <p className="text-xl font-bold text-gray-900">S/ {stats.valorTotal.toFixed(2)}</p>
+        
+        {/* Card extra opcional para completar el grid o mostrar otra métrica */}
+         <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-purple-50 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-purple-600" />
+            </div>
+            <span className="text-sm font-medium text-gray-500">Categorías</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{categorias.length}</p>
         </div>
       </div>
 

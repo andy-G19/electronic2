@@ -1,52 +1,62 @@
 import React from 'react';
-import { Search, Bell, LogOut, Menu, X, User } from 'lucide-react';
+import { Search, Bell, LogOut, Menu, User } from 'lucide-react';
 
 function Header({ sidebarOpen, setSidebarOpen, usuario, onLogout }) {
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
+    <header className="bg-white border-b border-gray-200 h-16 shrink-0 sticky top-0 z-10">
+      <div className="h-full px-4 md:px-6 flex items-center justify-between gap-4">
+        
+        {/* Izquierda: Botón Menú + Buscador */}
         <div className="flex items-center gap-4 flex-1">
+          {/* Botón Hamburguesa: Visible solo en móvil (md:hidden) */}
           <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="rounded-lg transition-transform duration-300 shadow-md hover:scale-110 hover:bg-gray-200 focus:outline-none"
+            className="p-2 -ml-2 rounded-lg text-gray-600 hover:bg-gray-100 md:hidden focus:outline-none focus:ring-2 focus:ring-sky-100"
           >
-            {sidebarOpen ? <X className={`w-6 h-6 text-sky-400 transform transition-transform duration-300 ${sidebarOpen ? 'rotate-0' : 'rotate-90'}`} /> : <Menu className="w-6 h-6 text-sky-400" />}
+            <Menu className="w-6 h-6" />
           </button>
           
-          
+          {/* Barra de Búsqueda */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Buscar productos, tickets o clientes..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent"
+              placeholder="Buscar..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm"
             />
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          {/* Info del usuario */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg">
-            <User className="w-4 h-4 text-gray-600" />
-            <div className="text-sm">
-              <p className="font-medium text-gray-900">{usuario?.nombre}</p>
-              <p className="text-xs text-gray-500">{usuario?.rol}</p>
+        {/* Derecha: Acciones y Perfil */}
+        <div className="flex items-center gap-2 md:gap-4">
+          
+          {/* Notificaciones */}
+          <button className="relative p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded-xl transition-colors">
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+          </button>
+
+          <div className="h-8 w-px bg-gray-200 hidden md:block"></div>
+
+          {/* Info Usuario (Solo Desktop) */}
+          <div className="hidden md:flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-sm font-semibold text-gray-900">{usuario?.nombre}</p>
+              <p className="text-xs text-gray-500 font-medium">{usuario?.rol}</p>
+            </div>
+            <div className="p-2 bg-sky-50 rounded-full">
+               <User className="w-5 h-5 text-sky-600" />
             </div>
           </div>
 
-          {/* Notificaciones */}
-          <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          {/* Logout */}
+          {/* Botón Salir */}
           <button 
             onClick={onLogout}
-            className="p-2 hover:bg-red-50 rounded-lg transition-colors group"
-            title="Cerrar sesión"
+            className="flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors ml-2"
+            title="Cerrar Sesión"
           >
-            <LogOut className="w-5 h-5 text-gray-600 group-hover:text-red-600" />
+            <LogOut className="w-5 h-5" />
+            <span className="hidden md:inline text-sm font-medium">Salir</span>
           </button>
         </div>
       </div>

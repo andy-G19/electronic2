@@ -1,7 +1,8 @@
 import React from 'react';
-import { Package, ShoppingCart, BarChart3, Users, Settings} from 'lucide-react';
+import { Package, ShoppingCart, BarChart3, Users, Settings, X } from 'lucide-react';
 
-function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
+function Sidebar({ activeView, setActiveView, usuario, onClose }) { // onClose es opcional si lo pasas
+  
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, section: 'PRINCIPAL' },
     { id: 'pos', label: 'Punto de Venta', icon: ShoppingCart, section: 'PRINCIPAL' },
@@ -13,10 +14,8 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
 
   // Filtrar menú según permisos del usuario
   const menuItemsFiltrados = menuItems.filter(item => {
-    // Dashboard siempre visible
     if (item.id === 'dashboard') return true;
-    // Verificar permisos
-    return usuario?.permisos?.[item.id] || false;
+    return usuario?.permisos?.[item.id] || false; // Manejo seguro de undefined
   });
 
   const groupedItems = menuItemsFiltrados.reduce((acc, item) => {
@@ -26,57 +25,63 @@ function Sidebar({ activeView, setActiveView, isOpen, setIsOpen, usuario }) {
   }, {});
 
   return (
-    
-    <div className={`${isOpen ? 'w-72' : 'w-0'} transition-all duration-300 bg-slate-900 text-white flex flex-col overflow-hidden`}>
-      {/* Logo */}
-      <div className="p-6 border-b border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-sky-300 rounded-lg flex items-center justify-center">
-            <Package className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold">Electronica Andy</h1>
-            <p className="text-xs text-slate-400">Gestión v1.0</p>
-          </div>
+    <div className="flex flex-col h-full w-full bg-slate-900 text-white">
+      {/* Header del Sidebar */}
+      <div className="h-16 flex items-center justify-between px-6 bg-slate-950">
+        <div className="flex items-center gap-2 font-bold text-xl tracking-wider">
+            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center text-white">
+            E
+            </div>
+            <span>ElecSales</span>
         </div>
+        {/* Botón cerrar solo visible en móvil (opcional, ya que el overlay cierra) */}
+        {onClose && (
+            <button onClick={onClose} className="md:hidden text-slate-400 hover:text-white">
+                <X className="w-6 h-6" />
+            </button>
+        )}
       </div>
 
-      {/* Menu Items */}
-      <nav className="flex-1 p-4 overflow-y-auto">
+      {/* Navegación Scrollable */}
+      <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-8 custom-scrollbar">
         {Object.entries(groupedItems).map(([section, items]) => (
-          <div key={section} className="mb-6">
-            <p className="text-xs font-semibold text-slate-500 mb-3 px-3">{section}</p>
-            {items.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeView === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveView(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-1 transition-all ${
-                    isActive 
-                      ? 'bg-sky-300 text-white shadow-lg' 
-                      : 'text-slate-300 hover:bg-slate-800'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                </button>
-              );
-            })}
+          <div key={section}>
+            <p className="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+              {section}
+            </p>
+            <div className="space-y-1">
+              {items.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeView === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveView(item.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                      isActive 
+                        ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20' 
+                        : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
+                  >
+                    <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                    <span className="font-medium text-sm">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ))}
       </nav>
 
-      {/* User Profile */}
-      <div className="p-4 border-t border-slate-800">
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-800">
-          <div className="w-10 h-10 bg-sky-300 rounded-full flex items-center justify-center font-bold text-sm">
-            {usuario?.nombre?.split(' ').map(n => n[0]).join('') || 'US'}
+      {/* Perfil de Usuario al pie */}
+      <div className="p-4 bg-slate-950 border-t border-slate-800">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-tr from-sky-400 to-blue-600 rounded-full flex items-center justify-center font-bold text-sm shadow-inner">
+            {usuario?.nombre?.substring(0, 2).toUpperCase() || 'US'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm truncate">{usuario?.nombre || 'Usuario'}</p>
-            <p className="text-xs text-slate-400 truncate">{usuario?.rol || 'Sin rol'}</p>
+            <p className="font-medium text-sm truncate text-white">{usuario?.nombre || 'Usuario'}</p>
+            <p className="text-xs text-slate-400 truncate">{usuario?.rol || 'Vendedor'}</p>
           </div>
         </div>
       </div>
